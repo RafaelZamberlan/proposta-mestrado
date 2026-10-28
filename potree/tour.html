@@ -45,10 +45,21 @@
     #controles { margin-top: 8px; }
     #controles button { padding: 6px 12px; font-size: 13px; }
   }
+  /* celular: o cartão vira uma faixa encaixada embaixo (não cobre a cena) e o texto mostra 3 linhas; tocar abre o resto */
   @media (max-width: 560px) {
-    #cartao { bottom: 8px; padding: 10px 12px; }
-    #cartao h1 { font-size: 16.5px; }
-    #cartao p { font-size: 13.5px; }
+    #cartao { left: 0; right: 0; bottom: 0; width: auto; transform: none; border-radius: 0; border-width: 1px 0 0;
+      padding: 8px 12px 10px; box-shadow: none; background: rgba(20, 23, 26, .97); }
+    #cartao .passo { font-size: 10.5px; }
+    #cartao h1 { font-size: 15px; margin: 3px 0; }
+    #cartao p { font-size: 12.5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+      overflow: hidden; cursor: pointer; }
+    #cartao p.aberto { display: block; }
+    #controles { margin-top: 8px; gap: 8px; }
+    #controles button { padding: 6px 12px; font-size: 13px; }
+    #pontos { gap: 5px; }
+    #pontos i { width: 6px; height: 6px; }
+    #legenda { top: 8px; left: 8px; font-size: 11.5px; padding: 4px 8px; gap: 10px; }
+    #legenda i { width: 9px; height: 9px; }
     #dica { display: none; }
   }
 </style>
@@ -185,6 +196,7 @@
     document.getElementById('num').textContent = `PASSO ${passo + 1} DE ${cfg.passos.length}`;
     document.getElementById('tit').textContent = p.titulo;
     document.getElementById('txt').textContent = p.texto;
+    document.getElementById('txt').classList.remove('aberto');
     document.getElementById('voltar').disabled = passo === 0;
     const prox = document.getElementById('proximo');
     prox.textContent = passo === cfg.passos.length - 1 ? 'recomeçar' : 'próximo ›';
@@ -194,6 +206,12 @@
     legenda(p);
     const u = new URLSearchParams(location.search); u.set('passo', passo + 1); history.replaceState(null, '', '?' + u);
   }
+  // no celular, a cena termina onde o cartão começa (o Potree acompanha o tamanho da área a cada quadro)
+  const cartao = document.getElementById('cartao'), estreito = matchMedia('(max-width: 560px)');
+  const encaixar = () => { document.getElementById('render').style.bottom = estreito.matches ? cartao.offsetHeight + 'px' : ''; };
+  new ResizeObserver(encaixar).observe(cartao);
+  estreito.addEventListener('change', encaixar);
+  document.getElementById('txt').addEventListener('click', ev => ev.currentTarget.classList.toggle('aberto'));
   document.getElementById('voltar').onclick = () => irPara(passo - 1);
   document.getElementById('proximo').onclick = () => irPara(passo === cfg.passos.length - 1 ? 0 : passo + 1);
   document.addEventListener('keydown', ev => {

@@ -257,5 +257,5 @@ figure video.video { width: 100%; height: auto; display: block; border: 1px soli
 .player-rodape { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: .86rem;
   color: var(--tinta2); margin-top: 8px; }
 @media (max-width: 720px) {
-  .player { aspect-ratio: 3 / 4; }
+  .player { aspect-ratio: auto; height: min(80vh, 700px); }
 }

@@ -44,17 +44,26 @@
     obs.observe(caixa);
   });
 
-  // ---------- apresentações 3D guiadas: em tela cheia, por cima da página
-  const modal = document.getElementById('tour-modal'), quadro = modal.querySelector('iframe');
-  const fechar = () => { modal.hidden = true; quadro.src = 'about:blank'; document.body.style.overflow = ''; };
-  document.querySelectorAll('[data-tour]').forEach(b => b.addEventListener('click', () => {
-    quadro.src = `potree/tour.html?t=${b.dataset.tour}`;
-    modal.hidden = false;
-    document.body.style.overflow = 'hidden';
-    quadro.focus();
+  // ---------- apresentação 3D na página: a aba escolhe o roteiro; o viewer só carrega no clique
+  const player = document.getElementById('player');
+  let tourAtual = 'avenida';
+  const comecar = () => {
+    const q = document.createElement('iframe');
+    q.src = `potree/tour.html?t=${tourAtual}`;
+    q.title = 'Apresentação 3D';
+    q.allow = 'fullscreen';
+    player.replaceChildren(q);
+  };
+  player.querySelector('.comecar').addEventListener('click', comecar);
+  document.querySelectorAll('.abas [data-tour]').forEach(aba => aba.addEventListener('click', () => {
+    document.querySelectorAll('.abas [data-tour]').forEach(b => b.setAttribute('aria-selected', String(b === aba)));
+    tourAtual = aba.dataset.tour;
+    document.getElementById('player-desc').textContent = aba.dataset.desc;
+    document.getElementById('tela-cheia').href = `potree/tour.html?t=${tourAtual}`;
+    const q = player.querySelector('iframe');
+    if (q) { q.src = `potree/tour.html?t=${tourAtual}`; return; }
+    player.querySelector('.capa').src = aba.dataset.capa;
   }));
-  document.getElementById('tour-fechar').addEventListener('click', fechar);
-  document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && !modal.hidden) fechar(); });
 
   const NS = 'http://www.w3.org/2000/svg';
   const el = (nome, attrs = {}, pai) => {

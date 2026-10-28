@@ -38,6 +38,13 @@
   .annotation-titlebar { background: rgba(20, 23, 26, .85) !important; color: #fff !important; border-radius: 4px !important;
     padding: 4px 7px !important; border: 1px solid #3a4046 !important; }
   #potree_map, #potree_sidebar_container, #potree_quick_buttons { display: none !important; }
+  @media (max-height: 640px) and (min-width: 561px) {   /* embutido na página: cartão menor, no canto */
+    #cartao { left: 12px; bottom: 12px; transform: none; width: min(440px, calc(100% - 24px)); padding: 10px 14px 10px; }
+    #cartao h1 { font-size: 16px; margin: 4px 0; }
+    #cartao p { font-size: 13px; line-height: 1.45; }
+    #controles { margin-top: 8px; }
+    #controles button { padding: 6px 12px; font-size: 13px; }
+  }
   @media (max-width: 560px) {
     #cartao { bottom: 8px; padding: 10px 12px; }
     #cartao h1 { font-size: 16.5px; }
@@ -75,7 +82,6 @@
   const hexRGB = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
   const grau = Math.PI / 180;
 
-  if (window !== window.top) document.getElementById('dica').style.right = '120px';   // dentro do site: o fechar fica ali
   window.POTREE_NUVEM_MERCATOR = false;
   proj4.defs('pointcloud', '+proj=utm +zone=23 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
   proj4.defs('WGS84', '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs');

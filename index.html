@@ -22,6 +22,7 @@
     <nav aria-label="Seções">
       <a href="#passos">Seis passos</a>
       <a href="#arvores">Árvores</a>
+      <a href="#ver3d">3D</a>
       <a href="#contexto">Por que importa</a>
       <a href="#perguntas">O mestrado</a>
       <a href="#cronograma">Cronograma</a>
@@ -40,29 +41,17 @@
   <h1>Inventário urbano 3D com câmeras 360° de consumo e o LiDAR aéreo público de São Paulo</h1>
   <p class="tese">Isto já funciona numa avenida e numa rua. O mestrado é validar, escalar e transformar em inventário aberto.</p>
 
+  <p class="autor autor-topo"><strong>Rafael Hilarion de Oliveira Zamberlan</strong> · Gestão Ambiental, EACH-USP</p>
+
   <figure class="largo destaque-fig">
-    <div class="comparar" data-rotulos="GPS do carro|pose ajustada">
-      <img src="fig/tcc_gps.jpg" alt="Foto 360 com as edificações do GeoSampa desalinhadas, na posição do GPS" width="1200" height="675">
-      <img class="depois" src="fig/tcc_ajustada.jpg" alt="A mesma foto com as edificações do GeoSampa encaixadas nas quinas e no telhado, na pose ajustada" width="1200" height="675">
+    <div class="comparar" data-rotulos="com o GPS|com a pose ajustada">
+      <img src="fig/tcc_gps.jpg" alt="Foto 360 com os contornos dos prédios desalinhados, na posição do GPS" width="1200" height="675">
+      <img class="depois" src="fig/tcc_ajustada.jpg" alt="A mesma foto com os contornos dos prédios encaixados nas quinas e no telhado, na pose ajustada" width="1200" height="675">
     </div>
-    <figcaption><strong>Arraste a barra.</strong> Uma foto 360° do TCC, tirada do teto de um carro. As linhas azuis são as
-      edificações do GeoSampa, na altura do telhado que o LiDAR mediu. Com o GPS do carro, elas não encaixam. Com a pose ajustada,
-      caem na quina e no telhado do prédio. <span class="selo">Resultados preliminares, Alinhamento360, out/2026.</span></figcaption>
+    <figcaption><strong>Arraste a barra.</strong> As linhas azuis são os prédios do cadastro da Prefeitura (GeoSampa). Com o GPS, a
+      foto fica fora do lugar e eles não encaixam. Com a pose ajustada, encaixam.</figcaption>
   </figure>
-
-  <div class="tours">
-    <button class="tour" type="button" data-tour="avenida">
-      <img src="fig/av_ajustada.jpg" alt="" width="1200" height="675" loading="lazy">
-      <span><strong>Apresentação 3D: a avenida</strong>5 passos, cerca de 2 min · fotos de uma GoPro no centro de SP</span>
-    </button>
-    <button class="tour" type="button" data-tour="trj2">
-      <img src="fig/arv_tronco.jpg" alt="" width="1200" height="675" loading="lazy">
-      <span><strong>Apresentação 3D: edificações e árvores</strong>6 passos, cerca de 2 min · uma rua do TCC</span>
-    </button>
-  </div>
-
-  <p class="autor"><strong>Rafael Hilarion de Oliveira Zamberlan</strong> · bacharel em Gestão Ambiental (EACH-USP, 2026) ·
-    <a href="mailto:rafael.zamberlan@usp.br">rafael.zamberlan@usp.br</a></p>
+  <a class="chamada-3d" href="#ver3d">Ver em 3D, passo a passo <span aria-hidden="true">↓</span></a>
 </section>
 
 <!-- ======================================================= PASSOS -->
@@ -195,6 +184,7 @@
         <video class="video" src="fig/arvores_orbita.mp4" poster="fig/arvores_orbita.jpg" width="960" height="540" autoplay muted loop playsinline preload="metadata"
           aria-label="Volta em torno das nove árvores da rua, cada uma com o rótulo de altura e DAP"></video>
         <figcaption><strong>e.</strong> De fora, cada árvore vira um modelo 3D com altura, copa e DAP, sobre o LiDAR 2017 da rua.
+          Ainda não há conferência em campo: medir 2 ou 3 DAPs com fita é o próximo passo.
           <span class="selo">Resultados preliminares, Alinhamento360, out/2026.</span></figcaption>
       </figure>
       <p class="coluna"><strong>Localização.</strong> O TCC posicionava cada árvore pelo centro da caixa do detector, que cai na copa.
@@ -207,44 +197,53 @@
         <figcaption>Distância ao topo da copa da mesma árvore no LiDAR 2017. Na árvore 1, cai de 3,55 m para 0,51 m; na árvore 2,
           os dois ficam parecidos. A referência é o topo da copa, não um tronco medido em campo.</figcaption>
       </figure>
-      <div class="tabela coluna">
-        <table>
-          <thead><tr><th>Árvore</th><th class="n">Altura</th><th class="n">DAP</th><th class="n">Copa Ø</th><th>Observação</th></tr></thead>
-          <tbody>
-            <tr><td>A01</td><td class="n">5,1 m</td><td class="n">18 cm</td><td class="n">8,0 m</td><td>DAP incerto: 8–31 cm entre 3 vistas</td></tr>
-            <tr><td>A02</td><td class="n">10,8 m</td><td class="n">31 cm</td><td class="n">8,2 m</td><td>canteiro elevado</td></tr>
-            <tr><td>A03</td><td class="n">10,1 m</td><td class="n">38 cm</td><td class="n">10,4 m</td><td></td></tr>
-            <tr><td>A04</td><td class="n">10,1 m</td><td class="n">49 cm</td><td class="n">10,1 m</td><td></td></tr>
-            <tr><td>A05</td><td class="n">8,9 m</td><td class="n">35 cm</td><td class="n">8,7 m</td><td>dois fustes: DAP de 20–40 cm</td></tr>
-            <tr><td>A06</td><td class="n">12,1 m</td><td class="n">44 cm</td><td class="n">9,7 m</td><td>vista a 33–44 m</td></tr>
-            <tr><td>A07</td><td class="n">10,4 m</td><td class="n">22 cm</td><td class="n">7,0 m</td><td></td></tr>
-            <tr class="fraco"><td>A08</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td>é um poste, e o método o separou</td></tr>
-            <tr><td>A09</td><td class="n">~9,6 m</td><td class="n">19 cm</td><td class="n">5,5 m</td><td>sem LiDAR: altura provavelmente superestimada</td></tr>
-          </tbody>
-          <caption>Conferências: 85–99,5% do LiDAR de cada modelo é da copa da própria árvore; as fotos de 2023 negam só 0–3% da copa
-            de 2017. Resultados preliminares, Alinhamento360, out/2026.</caption>
-        </table>
-      </div>
-      <p class="nota coluna"><strong>Ainda não há verdade de campo.</strong> Nenhuma altura ou DAP foi medido com fita ou hipsômetro.
-        Medir 2 ou 3 DAPs é o próximo passo.</p>
     </div>
   </div>
 
   <div class="passo-bloco">
     <div class="passo-num">6</div>
     <div>
-      <h3>Escala: onde já funciona e onde ainda não</h3>
-      <ul class="coluna conferencias">
-        <li><strong>Trajetórias do TCC:</strong> a montagem da câmera no carro foi medida (+6,4° a +6,9° de rumo, igual nas quatro).
-          O ajuste pelas edificações encaixa todas as fotos em três trajetórias (12/12, 19/19 e 4/4).</li>
-        <li><strong>Onde falha:</strong> na trj3 (33 de 77 fotos), há poucos prédios, longe e de um lado só. A saída é ajustar juntas
-          as fotos vizinhas; isso ainda não foi implementado.</li>
-        <li><strong>Imagens abertas:</strong> há 70.078 fotos 360° no Mapillary em São Paulo. No Ibirapuera, o estacionamento
-          encaixa no LiDAR a 0,9 m; debaixo da copa, ainda não, porque o GPS do aplicativo era uma reta e a fotogrametria saiu torta
-          e na escala errada.</li>
+      <h3>E as 70 mil fotos abertas?</h3>
+      <p class="coluna">Não é preciso fotografar a cidade inteira. Só em São Paulo, o Mapillary tem <strong>70.078 fotos 360°</strong>
+        abertas e gratuitas, feitas por voluntários (licença CC-BY-SA, que pede atribuição). Se elas encaixarem no LiDAR como as da
+        GoPro, viram matéria-prima para o inventário da cidade.</p>
+      <ul class="coluna duvidas">
+        <li><strong>Elas encaixam?</strong> Num primeiro teste no Ibirapuera, sim, em área aberta: as fotos do estacionamento ficaram
+          a 0,9 m do LiDAR.</li>
+        <li><strong>E debaixo das árvores?</strong> Ainda não. O GPS do aplicativo era uma reta interpolada, e a reconstrução pelas
+          fotos saiu torta e fora de escala.</li>
+        <li><strong>Onde há fotos?</strong> Em 930 sequências. A maior parte vem de 2016, a pé e de bicicleta, e de 2022, de carro
+          na Zona Leste.</li>
+        <li><strong>Qual a qualidade?</strong> Menor que a da GoPro, mas com mais fotos por metro de rua.</li>
       </ul>
+      <p class="coluna">Responder a essas dúvidas é uma das perguntas do mestrado.</p>
     </div>
   </div>
+</section>
+
+<section class="secao" id="ver3d">
+  <div class="rotulo-secao">Apresentação 3D</div>
+  <h2>Veja em 3D, passo a passo</h2>
+  <p class="coluna">Dois roteiros curtos, dentro das fotos 360° e da nuvem do LiDAR. Escolha um, clique em começar e use
+    <strong>próximo</strong> para avançar.</p>
+  <div class="abas" role="tablist" aria-label="Roteiros 3D">
+    <button role="tab" type="button" aria-selected="true" data-tour="avenida" data-capa="fig/av_ajustada.jpg"
+      data-desc="Fotos 360° de uma GoPro na avenida da Biblioteca Mário de Andrade: do GPS errado à pose ajustada.">
+      A avenida <span>5 passos · 2 min</span></button>
+    <button role="tab" type="button" aria-selected="false" data-tour="trj2" data-capa="fig/arv_tronco.jpg"
+      data-desc="Uma rua do TCC: os prédios do GeoSampa encaixando na foto e as árvores em 3D, do tronco à copa.">
+      Prédios e árvores <span>6 passos · 2 min</span></button>
+  </div>
+  <div class="player" id="player">
+    <img class="capa" src="fig/av_ajustada.jpg" alt="" width="1200" height="675" loading="lazy">
+    <button class="comecar" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      <span>Começar a apresentação</span>
+    </button>
+  </div>
+  <div class="player-rodape"><span id="player-desc">Fotos 360° de uma GoPro na avenida da Biblioteca Mário de Andrade: do GPS
+    errado à pose ajustada.</span><a id="tela-cheia" href="potree/tour.html?t=avenida" target="_blank" rel="noopener">abrir em
+    tela cheia</a></div>
 </section>
 
 <section class="secao" id="contexto">
@@ -313,7 +312,7 @@
     <li><strong>Precisão absoluta.</strong> Qual o erro contra pontos de controle medidos em campo com GNSS RTK? Hoje não se sabe
       qual faixa de voo do LiDAR está certa.</li>
     <li><strong>Escala.</strong> O método se mantém em trajetórias completas (1.500 a 3.500 fotos)? O ajuste conjunto de fotos
-      vizinhas (janela de ±5) resolve casos como a trj3? Qual a taxa de sucesso por tipo de cena: avenida, rua estreita, debaixo de
+      vizinhas resolve as ruas com poucos prédios à vista? Qual a taxa de sucesso por tipo de cena: avenida, rua estreita, debaixo de
       copa, céu nublado?</li>
     <li><strong>Comparação.</strong> Quanto o método ganha sobre o GPS e sobre métodos de localização cross-view (<a href="https://doi.org/10.52202/075280-0234">HC-Net: WANG et al., 2023</a>;
       <a href="https://doi.org/10.1109/TPAMI.2023.3346924">CCVPE: XIA; BOOIJ; KOOIJ, 2024</a>)?</li>
@@ -391,10 +390,6 @@
   Viewers 3D com Potree 1.8 (licença BSD). Fotos publicadas com pessoas e veículos desfocados.
 </footer>
 
-<div id="tour-modal" hidden>
-  <button id="tour-fechar" type="button" aria-label="Fechar a apresentação 3D">fechar ×</button>
-  <iframe title="Apresentação 3D" allow="fullscreen"></iframe>
-</div>
 
 <script src="app.js"></script>
 </body>

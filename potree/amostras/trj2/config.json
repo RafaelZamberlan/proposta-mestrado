@@ -1,0 +1,94 @@
+{
+ "titulo": "Trajetória trj2: nuvem refeita no Metashape pelas 12 fotos da Ladybug (cor da foto) sobre o LiDAR 2017; em azul, as câmeras",
+ "camadas": [
+  {
+   "id": "lidar",
+   "nome": "LiDAR 2017",
+   "caminho": "amostras/arvores_lidar/metadata.json",
+   "cor": "classe",
+   "tamanho": 2.2,
+   "visivel": true
+  },
+  {
+   "id": "fotos",
+   "nome": "Nuvem das fotos",
+   "caminho": "amostras/trj2_fotos/metadata.json",
+   "pontos": 367923,
+   "mb": 7.0,
+   "cor": "rgb",
+   "tamanho": 2.8,
+   "visivel": true,
+   "brilho": 0.3
+  },
+  {
+   "id": "cameras",
+   "nome": "Câmeras",
+   "caminho": "amostras/trj2_cameras/metadata.json",
+   "pontos": 4800,
+   "mb": 0.1,
+   "cor": "rgb",
+   "tamanho": 3.0,
+   "visivel": true
+  }
+ ],
+ "classes": {
+  "2": "chão",
+  "20": "chão",
+  "5": "vegetação",
+  "6": "prédio",
+  "19": "outros"
+ },
+ "grupos": [
+  {
+   "nome": "Chão",
+   "classes": [
+    2,
+    20
+   ]
+  },
+  {
+   "nome": "Vegetação",
+   "classes": [
+    5
+   ]
+  },
+  {
+   "nome": "Prédio",
+   "classes": [
+    6
+   ]
+  },
+  {
+   "nome": "Outros",
+   "classes": [
+    19
+   ]
+  }
+ ],
+ "resumo": {
+  "fotos": 12,
+  "alinhadas": 12,
+  "pontos_total": 2389050,
+  "pontos_conf2": 1018198
+ },
+ "vista": {
+  "posicao": [
+   348309.8,
+   7395217.8,
+   823.2
+  ],
+  "alvo": [
+   348329.8,
+   7395269.8,
+   800.2
+  ]
+ },
+ "rotulos": [],
+ "cores": {
+  "2": "#5d5c58",
+  "20": "#5d5c58",
+  "5": "#55604f",
+  "6": "#6b6862",
+  "19": "#625e55"
+ }
+}

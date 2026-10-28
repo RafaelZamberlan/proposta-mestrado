@@ -1,0 +1,113 @@
+{
+ "fotos": 26,
+ "C_antes_mediana": 8.12,
+ "C_depois_mediana": 0.78,
+ "melhoraram": 26,
+ "foto_da_figura": "NR9C17",
+ "por_foto": {
+  "083IVN": {
+   "antes": 6.132,
+   "depois": 1.32
+  },
+  "1XYC02": {
+   "antes": 99.0,
+   "depois": 0.734
+  },
+  "2S30JV": {
+   "antes": 7.933,
+   "depois": 0.478
+  },
+  "4EDL58": {
+   "antes": 8.189,
+   "depois": 0.55
+  },
+  "5NT03C": {
+   "antes": 8.4,
+   "depois": 0.647
+  },
+  "8F0H6W": {
+   "antes": 8.14,
+   "depois": 0.44
+  },
+  "9P16WJ": {
+   "antes": 6.071,
+   "depois": 3.425
+  },
+  "15Q7DT": {
+   "antes": 8.637,
+   "depois": 0.99
+  },
+  "87CT1N": {
+   "antes": 4.631,
+   "depois": 2.516
+  },
+  "97GL8A": {
+   "antes": 99.0,
+   "depois": 2.271
+  },
+  "B8D45F": {
+   "antes": 8.336,
+   "depois": 0.549
+  },
+  "BC185D": {
+   "antes": 8.328,
+   "depois": 0.535
+  },
+  "C96ZU4": {
+   "antes": 8.441,
+   "depois": 4.704
+  },
+  "G1B8R1": {
+   "antes": 7.857,
+   "depois": 0.561
+  },
+  "GI7T64": {
+   "antes": 7.729,
+   "depois": 1.361
+  },
+  "H3H2T1": {
+   "antes": 8.18,
+   "depois": 0.726
+  },
+  "JY0I40": {
+   "antes": 6.627,
+   "depois": 1.383
+  },
+  "L9AT29": {
+   "antes": 7.687,
+   "depois": 2.187
+  },
+  "NR9C17": {
+   "antes": 8.101,
+   "depois": 1.554
+  },
+  "ON162Q": {
+   "antes": 5.832,
+   "depois": 0.438
+  },
+  "Q07MT2": {
+   "antes": 8.416,
+   "depois": 0.772
+  },
+  "Q98I0N": {
+   "antes": 6.791,
+   "depois": 0.722
+  },
+  "Q536TR": {
+   "antes": 6.873,
+   "depois": 0.696
+  },
+  "SM754W": {
+   "antes": 9.158,
+   "depois": 0.79
+  },
+  "T4X3E1": {
+   "antes": 6.658,
+   "depois": 3.597
+  },
+  "Y169XC": {
+   "antes": 99.0,
+   "depois": 1.32
+  }
+ }
+}

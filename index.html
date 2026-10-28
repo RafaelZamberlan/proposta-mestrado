@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inventário urbano 3D com câmeras 360° e LiDAR aéreo público · proposta de mestrado</title>
+<meta name="description" content="Proposta de mestrado (PPG Sustentabilidade, EACH-USP): registrar imagens 360° de câmeras de consumo ao LiDAR aéreo público de São Paulo para um inventário urbano aberto por objeto. Resultados preliminares com viewers 3D.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%275%27 fill=%27%231f5f8b%27/%3E%3Cpath d=%27M16 5v22M5 16h22%27 stroke=%27%23fff%27 stroke-width=%272%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276.5%27 fill=%27none%27 stroke=%27%23fff%27 stroke-width=%272%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="estilo.css">
+<script>
+  try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.tema = t; } catch (e) {}
+</script>
+</head>
+<body>
+
+<header class="topo">
+  <div class="dentro">
+    <a class="marca" href="#inicio">Inventário 360 × LiDAR</a>
+    <nav aria-label="Seções">
+      <a href="#resultados">Resultados</a>
+      <a href="#contexto">Contexto</a>
+      <a href="#lacuna">Lacuna</a>
+      <a href="#perguntas">Perguntas</a>
+      <a href="#cronograma">Cronograma</a>
+      <a href="#referencias">Referências</a>
+    </nav>
+    <button id="tema" type="button" aria-label="Trocar tema claro e escuro">tema</button>
+  </div>
+</header>
+
+<main id="inicio">
+
+<section class="abertura">
+  <div class="graticula" aria-hidden="true">
+    <span>23°32′51″S · 46°38′28″W</span><span>SIRGAS 2000 / UTM 23S (EPSG:31983)</span><span>LiDAR aéreo PMSP 2017</span>
+  </div>
+  <p class="chapeu">Proposta de mestrado · PPG Sustentabilidade · EACH-USP</p>
+  <h1>Inventário urbano 3D com câmeras 360° de consumo e o LiDAR aéreo público de São Paulo</h1>
+  <p class="tese">Isto já funciona numa avenida e numa trajetória. O mestrado é validar, escalar e transformar em inventário aberto.</p>
+  <p class="autor"><strong>Rafael Hilarion de Oliveira Zamberlan</strong> · bacharel em Gestão Ambiental (EACH-USP, 2026) ·
+    <a href="mailto:rafael.zamberlan@usp.br">rafael.zamberlan@usp.br</a></p>
+
+  <div class="indicadores">
+    <div class="indicador"><div class="valor">22 <small>m</small></div>
+      <div class="desc">erro mediano do GPS da GoPro nas 26 fotos do bloco da avenida (6 a 42 m), corrigido pelo LiDAR</div></div>
+    <div class="indicador"><div class="valor">±0,26 <small>m</small></div>
+      <div class="desc">resíduo das fachadas da nuvem refeita com as poses ajustadas, sem nenhum ponto marcado à mão</div></div>
+    <div class="indicador"><div class="valor">8 <small>árvores</small></div>
+      <div class="desc">com modelo 3D na trajetória trj2: altura, DAP e copa (o 9º objeto era um poste, e o método o separou)</div></div>
+    <div class="indicador"><div class="valor">70.078</div>
+      <div class="desc">fotos 360° abertas no Mapillary em São Paulo, em 930 sequências (levantamento próprio)</div></div>
+  </div>
+  <p class="selo">Resultados preliminares, Alinhamento360, out/2026.</p>
+
+  <div class="duas" style="margin-top:2.4rem">
+    <div>
+      <h4>Do TCC ao mestrado</h4>
+      <p>No TCC, <em>Geotecnologias Aplicadas à Gestão Urbana: Proposta de Framework Automatizado para Inventário e
+        Monitoramento de Ativos e Passivos Ambientais em Imagens 360°</em>, orientado pela Profa. Flávia Noronha Dutra Ribeiro,
+        detectei árvores, postes e panelas com YOLOv11 e localizei cada objeto por correspondência de feições e triangulação
+        multivista, com saída vetorial no QGIS.</p>
+      <p>Três limites apareceram: pouca sobreposição entre quadros (3 a 5 m), o erro do GPS da trajetória e o viés do centro da
+        caixa delimitadora. Profissionalmente, construo pipelines de agentes de IA.</p>
+    </div>
+    <div>
+      <h4>A ideia</h4>
+      <svg viewBox="0 0 420 250" role="img" aria-labelledby="tri-t">
+        <title id="tri-t">Triângulo qualidade, quantidade e precisão, com o que resolve cada vértice</title>
+        <polygon points="210,30 60,210 360,210" style="fill:none;stroke:var(--tinta);stroke-width:1.2"/>
+        <circle cx="210" cy="30" r="5" style="fill:var(--destaque)"/><circle cx="60" cy="210" r="5" style="fill:var(--destaque)"/><circle cx="360" cy="210" r="5" style="fill:var(--destaque)"/>
+        <text x="210" y="16" text-anchor="middle" font-weight="600" style="fill:var(--tinta)" font-size="14">Precisão</text>
+        <text x="210" y="56" text-anchor="middle" style="fill:var(--tinta2)" font-size="11.5">pose registrada ao LiDAR aéreo público</text>
+        <text x="60" y="232" text-anchor="middle" font-weight="600" style="fill:var(--tinta)" font-size="14">Quantidade</text>
+        <text x="60" y="247" text-anchor="middle" style="fill:var(--tinta2)" font-size="11.5">Mapillary + GoPro Max</text>
+        <text x="360" y="232" text-anchor="middle" font-weight="600" style="fill:var(--tinta)" font-size="14">Qualidade</text>
+        <text x="360" y="247" text-anchor="middle" style="fill:var(--tinta2)" font-size="11.5">segmentação + densificação</text>
+      </svg>
+      <p style="font-size:.92rem;color:var(--tinta2);margin-top:.6rem">No TCC ficou claro que é difícil ter qualidade, quantidade e precisão ao mesmo tempo. A <strong>precisão</strong> vem de registrar a pose de cada imagem 360° com o LiDAR aéreo da Prefeitura como gabarito. A <strong>quantidade</strong>, das imagens abertas do Mapillary e de câmeras de consumo. A <strong>qualidade</strong>, da segmentação atual (SAM, GroundingDINO, SegFormer) e da densificação da nuvem pelas fotos, onde o laser aéreo vê pouco: cerca de 3 pontos/m² na fachada.</p>
+    </div>
+  </div>
+  <p class="hipotese"><strong>Hipótese.</strong> Uma câmera 360° de consumo, registrada ao LiDAR aéreo público, permite um inventário
+    urbano por objeto preciso e barato, sem GNSS/INS de alto custo.</p>
+  <p style="max-width:740px">Produto final: um inventário urbano aberto, colaborativo e evolutivo, num WebGIS com Potree. Ele reúne
+    árvores com altura, DAP e copa 3D, postes, fiação e bocas de lobo. O público pode confirmar a espécie de cada árvore.</p>
+</section>
+
+<!-- ======================================================= RESULTADOS -->
+<section class="secao" id="resultados">
+  <div class="rotulo-secao">3 · Resultados preliminares</div>
+  <h2>O que já funciona</h2>
+  <p class="coluna">Quatro frentes, com dados reais de São Paulo e o LiDAR aéreo de 2017 como referência. Cada resultado é conferido por réguas que não entraram no ajuste. Onde não há verdade de campo, isso está dito.</p>
+
+  <!-- 3a -->
+  <h3 id="avenida">3a. GoPro Max numa avenida do centro (49 fotos)</h3>
+  <div class="coluna">
+    <p><strong>Foto única, estratégia C.</strong> O LiDAR vira um modelo de superfície (MDS) de 0,5 m. Por ray casting na GPU, o MDS
+      gera uma foto sintética de cada pose candidata. O contorno prédio × céu dessa foto é comparado com o da semântica da foto
+      real (SegFormer). Resultado: <strong>43 de 49 fotos</strong> confirmadas por critérios independentes.</p>
+    <p><strong>Viés lateral de ~0,9 m: causa achada.</strong> O MDS "incha" os prédios 0,65 a 0,80 m além das paredes. Como o carro
+      anda perto de um lado da rua, o prédio mais próximo domina o custo e empurra a câmera.</p>
+    <p><strong>Um erro dentro do próprio LiDAR 2017.</strong> As faixas de voo de ida e de volta estão deslocadas ~0,2 m para a
+      direita do próprio voo: assinatura de erro de montagem do sensor. O ajuste de faixas tirou cerca de metade dos ~0,3 m que
+      sobravam entre telhados e paredes.</p>
+    <p><strong>Ajuste em bloco com o LiDAR como gabarito.</strong> As poses das 26 fotos do bloco da avenida e os pontos de ligação se ajustam juntos ao chão, aos telhados e às paredes do LiDAR. A medida do contorno entra no ajuste e amarra a posição ao longo da via, sem nenhum ponto marcado à mão.</p>
+  </div>
+
+  <figure class="largo">
+    <a href="fig/contornos.jpg"><img src="fig/contornos.jpg" alt="Foto 360 da avenida com dois contornos prédio-céu: o da foto e o do MDS. Antes, com o GPS, os contornos se desencontram; depois do ajuste, coincidem." loading="lazy" width="1834" height="1184"></a>
+    <figcaption>Em cima, a foto sintética do MDS. Embaixo, a foto real com o contorno prédio × céu da foto (magenta) e o do MDS (amarelo): antes, com o GPS da GoPro, a 8,1° um do outro; depois do ajuste, a 1,6°. A foto mostrada tem o custo antes mais próximo da mediana das 26, não é a melhor. Nas 26, a mediana cai de 8,1° para 0,8°, e todas melhoram. Rostos e veículos desfocados.
+      <span class="selo">Resultados preliminares, Alinhamento360, out/2026.</span></figcaption>
+  </figure>
+
+  <div class="viewer largo" data-viewer="avenida">
+    <img class="previa" src="fig/previa_avenida.jpg" alt="Prévia do viewer 3D da avenida" loading="lazy">
+    <div class="legenda-previa">Avenida: LiDAR 2017 por classe, nuvem refeita pelas fotos ajustadas e as câmeras (GPS × pose ajustada)</div>
+    <button class="abrir" type="button">Explorar em 3D</button>
+  </div>
+  <div class="viewer-rodape largo"><span>Vermelho: posição do GPS. Azul: pose ajustada. Liga e desliga as classes do LiDAR no painel.</span>
+    <a href="potree/viewer.html?v=avenida" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+
+  <h4 style="margin-top:2.4rem">Réguas independentes (versão automática, sem ponto manual)</h4>
+  <p class="coluna" style="font-size:.95rem">Cada conjunto de poses foi conferido refazendo a nuvem densa no Metashape e medindo-a
+    contra o LiDAR.</p>
+  <div class="tabela coluna">
+    <table>
+      <thead><tr><th>Régua</th><th>Como se mede</th><th class="n">Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>Fachadas</td><td>corte da nuvem das fotos contra a parede do LiDAR</td><td class="n">±0,26 m</td></tr>
+        <tr><td>Prumo das fachadas</td><td>inclinação da fachada da nuvem, lado norte / sul</td><td class="n">−0,15° / −0,19°</td></tr>
+        <tr><td>Pontos de controle</td><td>2 quinas de prédio numa foto, a 41–50 m, fora do ajuste</td><td class="n">0,14° / 0,04°</td></tr>
+        <tr><td>Linhas do GeoSampa</td><td>quanto as edificações pedem ao longo da via</td><td class="n">−0,02 m</td></tr>
+      </tbody>
+      <caption>A régua de prumo não distingue diferenças abaixo de ~0,2°. Só há 2 pontos de controle, na mesma foto. A posição
+        absoluta depende de qual faixa do LiDAR está certa, e isso só um levantamento de campo diz.</caption>
+    </table>
+  </div>
+
+  <figure class="largo">
+    <div class="duas-fig">
+      <svg id="faixas-esquema" viewBox="0 0 480 330" role="img" aria-label="Esquema, vista de cima: a faixa voada para leste põe a parede ao sul e a voada para oeste põe a parede ao norte, cada uma à direita do próprio voo"></svg>
+      <svg id="faixas-dados" viewBox="0 0 480 330" role="img" aria-label="Deslocamento para a direita do voo nas 9 faixas: de 0,06 a 0,36 m, média de 0,21 m"></svg>
+    </div>
+    <figcaption>No esquema (vista de cima, escala exagerada), cada faixa põe a parede ~0,2 m à direita do próprio voo, e a mesma
+      parede aparece em duas cópias. Qual delas está certa em absoluto não se sabe. No gráfico, o deslocamento transversal medido
+      pelo chão (intensidade do laser) em cada uma das 9 faixas da área: todas saem para a direita do voo.
+      <span class="selo">Resultados preliminares, Alinhamento360, out/2026.</span></figcaption>
+  </figure>
+
+  <details class="descartados coluna">
+    <summary>Testado e descartado (prova de método)</summary>
+    <dl>
+      <dt>ICP contra o LiDAR aéreo</dt><dd>Desliza a nuvem pelas paredes; no COLMAP, baixou as câmeras 1,32 m.</dd>
+      <dt>Erosão bruta do MDS</dt><dd>Tira o viés lateral, mas devolve ruído e apaga detalhes.</dd>
+      <dt>Similaridade de 7 parâmetros</dt><dd>Os telhados ruidosos tombam o bloco ~0,17°.</dd>
+      <dt>Correção suave pela nuvem densa</dt><dd>Mexer nas câmeras sem olhar as fotos quebra a geometria: a dispersão das fachadas sobe para ±0,39–0,42 m.</dd>
+      <dt>Pintura da via × intensidade do laser</dt><dd>Correlação de 0,1–0,25, com segundo pico quase igual; a pintura mudou desde 2017.</dd>
+      <dt>Postes como pontos de controle automáticos</dt><dd>O LiDAR aéreo tem só ~10 postes utilizáveis perto das fotos.</dd>
+      <dt>Linhas do GeoSampa foto a foto</dt><dd>A nuvem perde metade dos pontos e as fachadas vão para ±0,46–0,81 m.</dd>
+      <dt>Pontos homólogos próprios</dt><dd>Empatam com o Metashape (fachadas a ±0,24–0,27 m), sem melhorar a posição ao longo da via.</dd>
+      <dt>Contorno com σ de 0,15 m</dt><dd>Passa do ponto: os pontos de controle e as paredes de conferência pioram.</dd>
+    </dl>
+  </details>
+
+  <!-- 3b -->
+  <h3 id="tcc">3b. Trajetórias do TCC (câmera Ladybug)</h3>
+  <div class="coluna">
+    <p><strong>Montagem da câmera medida.</strong> O rumo da Ladybug estava deslocado por montagem no carro. O desvio é o mesmo nas
+      quatro trajetórias: +6,4° a +6,9°.</p>
+    <p><strong>Atitude medida (modo 5).</strong> Na trj2, o contorno prédio × céu cai de 1,41° para 1,00°, melhorando nas 12 fotos.</p>
+    <p><strong>Ajuste pelas edificações do GeoSampa (modo 9).</strong> As arestas da camada de edificações viram linhas na foto, e a
+      pose se ajusta a elas.</p>
+  </div>
+  <div class="tabela coluna">
+    <table>
+      <thead><tr><th>Trajetória</th><th class="n">Fotos ajustadas</th><th class="n">Amostras casadas</th><th>Situação</th></tr></thead>
+      <tbody>
+        <tr><td>trj2</td><td class="n">12/12</td><td class="n">38%</td><td>ajusta</td></tr>
+        <tr><td>trj4</td><td class="n">19/19</td><td class="n">36%</td><td>ajusta</td></tr>
+        <tr><td>trj5</td><td class="n">4/4</td><td class="n">19%</td><td>ajusta pouco: a camada de 2004 está desatualizada ali</td></tr>
+        <tr class="fraco"><td>trj3</td><td class="n">33/77</td><td class="n">18%</td><td>não confiável</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="coluna">
+    <p><strong>Por que a trj3 falha.</strong> Ali a foto sozinha não determina a pose: as arestas que casam são poucas, longe (60 m na mediana) e caem num cone só. Um metro de deslocamento mexe as amostras só 0,03–0,04°, abaixo do ruído das linhas (~0,1°). A saída diagnosticada é ajustar juntas as fotos vizinhas, numa janela de ±5; a estimativa é de o erro cair de ~1 m para ~0,1–0,3 m por foto. Isso ainda não foi implementado.</p>
+    <p class="nota aviso">Nas quatro trajetórias, o ajuste por linhas melhora o custo das linhas, mas piora um pouco o contorno
+      (trj2: 1,00° → 1,25°). Ainda não há árbitro independente entre os dois modos. Pontos medidos em campo resolvem isso.</p>
+  </div>
+
+  <!-- 3c -->
+  <h3 id="arvores">3c. Árvores 3D (trajetória trj2)</h3>
+  <ol class="passos">
+    <li><strong>Detecção</strong>YOLO11m do TCC</li>
+    <li><strong>Máscara</strong>SAM 2.1; tronco por GroundingDINO</li>
+    <li><strong>Localização</strong>raio da foto até a copa do LiDAR</li>
+    <li><strong>Modelo 3D</strong>SAM 3 em todas as fotos, escultura pelo vazio, casco por silhueta</li>
+    <li><strong>Medidas</strong>altura, DAP, copa</li>
+  </ol>
+  <div class="coluna">
+    <p><strong>Localização.</strong> O TCC localizava cada árvore pelo centro da caixa do YOLO, que cai na copa. O método novo usa a
+      direção do pé da árvore em cada foto e a distância da copa do LiDAR que o raio atravessa, num ajuste único com todas as fotos.
+      O método do TCC só pôde ser refeito em duas árvores, as que têm duas ou mais caixas do YOLO.</p>
+  </div>
+  <figure class="coluna">
+    <div class="grafico" id="grafico-localizacao" role="img" aria-label="Distância até o topo da copa no LiDAR: árvore 1, TCC 3,55 m e método novo 0,51 m; árvore 2, TCC 2,16 m e método novo 2,47 m"></div>
+    <div class="legenda"><span><i style="background:var(--barra-neutra)"></i>método do TCC (centro da caixa)</span>
+      <span><i style="background:var(--destaque)"></i>método novo, só pela foto</span></div>
+    <figcaption>Distância de cada posição ao topo da copa da mesma árvore no LiDAR 2017. Na árvore 1, o erro cai de 3,55 m para
+      0,51 m. Na árvore 2, os dois ficam parecidos. A referência é o topo da copa, que não fica exatamente sobre o tronco. Ainda não
+      há tronco medido em campo.
+      <span class="selo">Resultados preliminares, Alinhamento360, out/2026.</span></figcaption>
+  </figure>
+
+  <div class="tabela coluna">
+    <table>
+      <thead><tr><th>Árvore</th><th class="n">Altura</th><th class="n">DAP</th><th class="n">Copa Ø</th><th>Observação</th></tr></thead>
+      <tbody>
+        <tr><td>A01</td><td class="n">5,1 m</td><td class="n">18 cm</td><td class="n">8,0 m</td><td>DAP incerto: 8–31 cm entre 3 vistas</td></tr>
+        <tr><td>A02</td><td class="n">10,8 m</td><td class="n">31 cm</td><td class="n">8,2 m</td><td>canteiro elevado (+0,66 m)</td></tr>
+        <tr><td>A03</td><td class="n">10,1 m</td><td class="n">38 cm</td><td class="n">10,4 m</td><td>12 de 12 fotos</td></tr>
+        <tr><td>A04</td><td class="n">10,1 m</td><td class="n">49 cm</td><td class="n">10,1 m</td><td></td></tr>
+        <tr><td>A05</td><td class="n">8,9 m</td><td class="n">35 cm</td><td class="n">8,7 m</td><td>dois fustes: DAP de 20–40 cm entre vistas</td></tr>
+        <tr><td>A06</td><td class="n">12,1 m</td><td class="n">44 cm</td><td class="n">9,7 m</td><td>vista a 33–44 m</td></tr>
+        <tr><td>A07</td><td class="n">10,4 m</td><td class="n">22 cm</td><td class="n">7,0 m</td><td>11 máscaras do tronco: 21–25 cm</td></tr>
+        <tr class="fraco"><td>A08</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td>é um poste: o SAM 3 não acha árvore</td></tr>
+        <tr><td>A09</td><td class="n">~9,6 m</td><td class="n">19 cm</td><td class="n">5,5 m</td><td>sem LiDAR: altura só pelo casco, provavelmente superestimada</td></tr>
+      </tbody>
+      <caption>Altura e copa a partir do pé medido nas fotos. Resultados preliminares, Alinhamento360, out/2026.</caption>
+    </table>
+  </div>
+
+  <div class="coluna">
+    <h4>Conferências</h4>
+    <ul>
+      <li>De 85% a 99,5% do LiDAR de cada modelo pertence à copa da própria árvore.</li>
+      <li>As fotos de 2023 negam só 0–3% da copa de 2017: nenhuma árvore com LiDAR sumiu ou foi podada forte.</li>
+      <li>O tronco por silhueta casa melhor com as máscaras que o cilindro antigo (IoU mediano por árvore, tabela abaixo).</li>
+      <li>As poses refinadas por pontos homólogos entre as panorâmicas levam o erro entre fotos de 0,37° para 0,06°.</li>
+    </ul>
+  </div>
+  <div class="tabela coluna">
+    <table>
+      <thead><tr><th>IoU do tronco</th><th class="n">A02</th><th class="n">A03</th><th class="n">A04</th><th class="n">A05</th><th class="n">A06</th><th class="n">A07</th><th class="n">A09</th></tr></thead>
+      <tbody>
+        <tr><td>silhueta</td><td class="n">0,72</td><td class="n">0,54</td><td class="n">0,71</td><td class="n">0,65</td><td class="n">0,60</td><td class="n">0,58</td><td class="n">0,67</td></tr>
+        <tr class="fraco"><td>cilindro</td><td class="n">0,40</td><td class="n">0,56</td><td class="n">0,40</td><td class="n">0,22</td><td class="n">0,36</td><td class="n">0,49</td><td class="n">0,13</td></tr>
+      </tbody>
+      <caption>No A03, reto e liso, os dois empatam. Com todas as fotos tiradas da rua, o casco fica espesso na direção perpendicular a ela; por isso o DAP vem da largura da máscara.</caption>
+    </table>
+  </div>
+  <p class="nota coluna"><strong>Ainda não há verdade de campo.</strong> Nenhuma altura ou DAP foi medido com fita ou hipsômetro.
+    O próximo passo é medir 2 ou 3 DAPs (A02 e A07, coerentes em 11–12 vistas; A05, espalhado) e a altura do A09, que não tem LiDAR.</p>
+
+  <figure class="largo">
+    <a href="fig/arvore_A03.jpg"><img src="fig/arvore_A03.jpg" alt="Seis fotos da árvore A03 com a máscara do SAM 3 em verde, e o modelo 3D de frente e de cima: copa do LiDAR, casco pelas fotos e tronco" loading="lazy" width="1764" height="1036"></a>
+    <figcaption>A03: a máscara do SAM 3 em 6 das 12 fotos que enxergam a árvore (7 a 19 m) e o modelo 3D que sai delas. Verde:
+      pontos do LiDAR 2017 da copa. Azul: casco pelas fotos, onde o laser não tem ponto. Marrom: tronco por silhueta. Pessoas e
+      veículos desfocados.
+      <span class="selo">Resultados preliminares, Alinhamento360, out/2026.</span></figcaption>
+  </figure>
+
+  <div class="viewer largo" data-viewer="arvores">
+    <img class="previa" src="fig/previa_arvores.jpg" alt="Prévia do viewer 3D das árvores" loading="lazy">
+    <div class="legenda-previa">Trajetória trj2: modelo 3D de cada árvore (A01–A09) sobre o LiDAR 2017</div>
+    <button class="abrir" type="button">Explorar em 3D</button>
+  </div>
+  <div class="viewer-rodape largo"><span>Verde: LiDAR da copa. Azul: casco pelas fotos. Marrom: tronco.</span>
+    <a href="potree/viewer.html?v=arvores" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+
+  <div class="coluna" style="margin-top:2rem">
+    <p><strong>Densificação pelas fotos.</strong> Com as poses ajustadas, o Metashape alinhou as 12 fotos da trj2 em 2,39 M pontos, com o chão a +0,06 m do LiDAR. A densidade é baixa (2,5–3% dos pixels válidos), por causa da costura da panorâmica da Ladybug. No A03, a nuvem só pelas fotos passou de 3.068 para 6.277 pontos com as poses refinadas: tronco denso, copa esparsa.</p>
+  </div>
+  <div class="viewer largo" data-viewer="trj2">
+    <img class="previa" src="fig/previa_trj2.jpg" alt="Prévia do viewer 3D da nuvem das fotos da trj2" loading="lazy">
+    <div class="legenda-previa">Trajetória trj2: nuvem refeita pelas 12 fotos, com o LiDAR 2017 opcional</div>
+    <button class="abrir" type="button">Explorar em 3D</button>
+  </div>
+  <div class="viewer-rodape largo"><span>Ligue o LiDAR 2017 no painel para comparar.</span>
+    <a href="potree/viewer.html?v=trj2" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+
+  <!-- 3d -->
+  <h3 id="mapillary">3d. Mapillary no Ibirapuera</h3>
+  <div class="coluna">
+    <p>O resultado mais instrutivo. Numa sequência de 180 fotos 360° de 2016, feita de bicicleta:</p>
+    <ul>
+      <li><strong>Funcionou:</strong> o bloco do estacionamento (68 fotos) registra no LiDAR e fica a 0,9 m da silhueta.</li>
+      <li><strong>Debaixo da copa, não decide.</strong> O GPS era uma reta interpolada pelo aplicativo. Os blocos de fotogrametria do
+        Mapillary saíram tortos (13° a 43°) e na escala errada (0,55× a 2,73×).</li>
+    </ul>
+    <p>Isso justifica uma das perguntas do mestrado: em que condições a imagem colaborativa serve, e o que fazer debaixo da copa,
+      onde o laser aéreo vê pouco e o GPS falha.</p>
+  </div>
+</section>
+
+<!-- ======================================================= CONTEXTO -->
+<section class="secao" id="contexto">
+  <div class="rotulo-secao">4 · Contexto e justificativa</div>
+  <h2>Por que isso importa em São Paulo</h2>
+  <div class="coluna">
+    <h4>Árvore, fiação e apagão</h4>
+    <ul>
+      <li>10–11/12/2025: 2,2 milhões de clientes sem luz no pico e mais de 330 árvores caídas (<a href="https://conexaoto.com.br/2025/12/15/mais-de-30-mil-clientes-seguem-sem-energia-em-sp-cinco-dias-apos-ciclone">Conexão Tocantins</a>);
+        no total, a Enel informou 4,4 milhões de clientes afetados (<a href="https://eixos.com.br/energia-eletrica/enel-diz-que-apagao-em-sp-afetou-44-milhoes-de-clientes-o-dobro-do-divulgado-anteriormente/">eixos</a>).</li>
+      <li>11/10/2024: 2,1 milhões de clientes da Enel afetados, e 660 mil ainda sem luz após 51 h (<a href="https://www.bloomberglinea.com.br/negocios/enel-nao-da-previsao-para-volta-de-energia-em-sp-e-aneel-e-governo-apontam-falhas/">Bloomberg Línea</a>).</li>
+      <li>03/11/2023: 3,5 milhões de clientes afetados, até 6 dias sem luz e 1.281 chamados por queda de árvore (<a href="https://sbtnews.sbt.com.br/noticia/brasil/apagao-de-novembro-de-2023-promessas-nao-cumpridas-e-sp-novamente-em-alerta">SBT News</a>).</li>
+      <li>Podas: a Enel fez 11% do plano de 2025 até meados de dezembro, segundo a Prefeitura (<a href="https://eixos.com.br/energia-eletrica/enel-cumpriu-so-11-de-plano-anual-de-podas-de-arvores-em-sp-diz-gestao-nunes-pifio/">eixos</a>).
+        Quedas de árvores: 3.819 em 2022, registradas pela Defesa Civil (<a href="https://prefeitura.sp.gov.br/documents/d/meio_ambiente/relatorio-gestao-arborizacao_2022-pdf">SVMA</a>).</li>
+    </ul>
+    <h4>Políticas que pedem o dado</h4>
+    <ul>
+      <li>O Plano Municipal de Arborização Urbana tem como Ação 1 "elaborar e disponibilizar o inventário arbóreo" (<a href="https://prefeitura.sp.gov.br/documents/d/meio_ambiente/relatorio-gestao-arborizacao_2022-pdf">SVMA</a>).</li>
+      <li>Em 2025, a Prefeitura autorizou um inventário de mais de R$ 18,8 milhões, com LiDAR, para ~650 mil árvores em até 3 anos
+        (<a href="https://prefeitura.sp.gov.br/w/prefeitura-investe-r-18-8-milh%C3%B5es-em-sistema-in%C3%A9dito-no-brasil-que-usa-laser-3d-e-intelig%C3%AAncia-artificial-para-catalogar-e-monitorar-%C3%A1rvores">Prefeitura de SP</a>). Cobre só árvores. O anúncio oficial não fala em dado aberto; uma reportagem posterior diz
+        que os dados irão para o GeoSampa, sem data (<a href="https://www.metropoles.com/sao-paulo/prefeitura-19-milhoes-inventario-arvores">Metrópoles</a>).</li>
+      <li>O <a href="https://geosampa.prefeitura.sp.gov.br/">GeoSampa</a> não tem camada pública de bocas de lobo (consulta em out/2026).</li>
+      <li>O PlanClima SP 2025 tem como meta publicar, até 2032, planos regionais de rotas arborizadas em todas as subprefeituras
+        (<a href="https://prefeitura.sp.gov.br/documents/d/secretaria_executiva_de_mudancas_climaticas/versao-final-plano-de-acao-climatica-do-municipio-de-sao-paulo-revisao-2025-pdf">PlanClima SP</a>).</li>
+    </ul>
+    <h4>Por que o satélite não basta</h4>
+    <ul>
+      <li>Gênero da árvore: recall médio de 18,7% só com imagem aérea, contra 49% com três imagens de rua por árvore (<a href="https://doi.org/10.1109/CVPR52688.2022.02061">BEERY et al., 2022</a>).</li>
+      <li>Detecção de árvores: mAP de 0,42 com imagem aérea, 0,58 com imagem de rua e 0,71 com as duas mais dados de mapa (<a href="https://doi.org/10.1109/CVPR.2016.647">WEGNER et al., 2016</a>).</li>
+      <li>Tampas de poço e bocas de lobo detectadas em imagem de rua com AP50 médio de 92%; as bocas de lobo sozinhas ficam em 84–89% (<a href="https://doi.org/10.3390/s20164450">SANTOS et al., 2020</a>).</li>
+    </ul>
+    <h4>Gêmeo digital e clima urbano</h4>
+    <p>Problemas de dados (aquisição, disponibilidade e qualidade) estão entre os desafios mais citados para gêmeos digitais urbanos (<a href="https://doi.org/10.1016/j.autcon.2022.104716">LEI et al., 2023</a>; <a href="https://doi.org/10.1016/j.scs.2023.104862">WEIL et al., 2023</a>). O padrão
+      CityGML 3.0 já prevê espécie, altura e diâmetros de árvore (<a href="https://docs.ogc.org/is/20-010/20-010.html">OGC, 2021</a>).</p>
+    <p>Ligação com o clima urbano: numa simulação ENVI-met em Augsburg, o cenário-base reproduziu 1,21 °C de uma diferença medida de 1,88 °C entre bairro e parque; com plantas simplificadas, só 0,05 °C (<a href="https://doi.org/10.5194/egusphere-egu25-17996">SIMON; OSTER; BECK, 2025</a>). O artigo publicado conclui que as árvores modeladas em detalhe tiveram o melhor desempenho, e que as plantas simplificadas não reproduziram o resfriamento do parque (<a href="https://doi.org/10.1016/j.uclim.2026.102879">SIMON; OSTER; BECK, 2026</a>). As árvores 3D da seção 3c são o tipo de dado que essas simulações pedem.</p>
+  </div>
+</section>
+
+<!-- ======================================================= LACUNA -->
+<section class="secao" id="lacuna">
+  <div class="rotulo-secao">5 · Trabalhos mais próximos</div>
+  <h2>O que já existe e o que falta</h2>
+  <div class="tabela coluna">
+    <table>
+      <thead><tr><th>Trabalho</th><th>O que faz</th><th>O que não cobre</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://doi.org/10.3390/s18051651">Zhu, Jia e Ji (2018)</a></td><td>sequência panorâmica × LiDAR móvel, pela linha do céu</td><td>corrige só a atitude, foto a foto; LiDAR móvel, não aéreo</td></tr>
+        <tr><td><a href="https://doi.org/10.1109/ICCV51701.2025.02470">LoD-Loc v2 (ZHU et al., 2025)</a></td><td>drone × modelo de cidade LoD pela silhueta; 0,72 m de mediana</td><td>vista aérea, não de rua; sem inventário</td></tr>
+        <tr><td><a href="https://doi.org/10.1109/ICCVW.2015.136">Bodensteiner et al. (2015)</a></td><td>vídeos de plataformas comunitárias, na maioria de drone, registrados a LiDAR aéreo público; ~0,4 m em relação à trajetória do ajuste</td><td>sem imagem de rua 360°; sem inventário por objeto</td></tr>
+        <tr><td><a href="https://doi.org/10.3390/rs16122110">Balestra et al. (2024)</a></td><td>drone + GoPro MAX para estimar DAP: 4,0 cm de RMSD em 20 árvores</td><td>georreferência por 5 pontos de controle RTK, não pelo LiDAR aéreo</td></tr>
+        <tr><td><a href="https://doi.org/10.3390/s22093269">Rodríguez-Puerta et al. (2022)</a></td><td>LiDAR aéreo e Google Street View para mapear copas</td><td>não registra as imagens: usa a posição do Google e junta detecções a até 4 m</td></tr>
+      </tbody>
+      <caption>Também próximo: <a href="https://doi.org/10.1109/3DIMPVT.2012.45">Taneja, Ballan e Pollefeys (2012)</a>, registro de panoramas esféricos a modelos 3D cadastrais, ainda não lido nesta revisão.</caption>
+    </table>
+  </div>
+  <p class="hipotese coluna">Até onde esta revisão alcançou, não foi identificado trabalho que registre imagens 360° de câmeras de
+    consumo e imagens colaborativas a uma nuvem LiDAR aérea pública, densifique a nuvem com elas e avalie quantitativamente o
+    inventário urbano por objeto resultante.</p>
+</section>
+
+<!-- ======================================================= PERGUNTAS -->
+<section class="secao" id="perguntas">
+  <div class="rotulo-secao">6 · O que o mestrado vai fazer</div>
+  <h2>Perguntas</h2>
+  <ol class="coluna">
+    <li><strong>Precisão absoluta.</strong> Qual o erro contra pontos de controle medidos em campo com GNSS RTK? Hoje não se sabe
+      qual faixa de voo do LiDAR está certa.</li>
+    <li><strong>Escala.</strong> O método se mantém em trajetórias completas (1.500 a 3.500 fotos)? O ajuste conjunto de fotos
+      vizinhas (janela de ±5) resolve casos como a trj3? Qual a taxa de sucesso por tipo de cena: avenida, rua estreita, debaixo de
+      copa, céu nublado?</li>
+    <li><strong>Comparação.</strong> Quanto o método ganha sobre o GPS e sobre métodos de localização cross-view (<a href="https://doi.org/10.52202/075280-0234">HC-Net: WANG et al., 2023</a>;
+      <a href="https://doi.org/10.1109/TPAMI.2023.3346924">CCVPE: XIA; BOOIJ; KOOIJ, 2024</a>)?</li>
+    <li><strong>Ganho no inventário.</strong> Quanto melhora a geolocalização e a medição dos objetos do TCC (árvores, postes,
+      panelas, bocas de lobo), com DAP e altura conferidos por fita e hipsômetro?</li>
+    <li><strong>Imagens colaborativas.</strong> Em que condições as imagens do Mapillary servem, a partir do caso do Ibirapuera?</li>
+    <li><strong>Produto.</strong> Um inventário aberto em WebGIS/Potree, com cadastro colaborativo de espécies.</li>
+  </ol>
+</section>
+
+<!-- ======================================================= CRONOGRAMA -->
+<section class="secao" id="cronograma">
+  <div class="rotulo-secao">7 · Cronograma</div>
+  <h2>24 meses</h2>
+  <div class="cronograma coluna" id="crono"></div>
+</section>
+
+<!-- ======================================================= FECHO -->
+<section class="secao" id="fecho">
+  <div class="rotulo-secao">8 · Fechamento</div>
+  <p class="fecho">Dado aberto e barato para a gestão de árvores, drenagem e calor em São Paulo.</p>
+  <p class="autor"><strong>Rafael Hilarion de Oliveira Zamberlan</strong> · <a href="mailto:rafael.zamberlan@usp.br">rafael.zamberlan@usp.br</a></p>
+
+  <h3 id="referencias">Referências</h3>
+  <ol class="referencias coluna" id="lista-referencias">
+    <li>3DBAG. <strong>roofer</strong>: large scale automatic LoD2.2 building reconstruction. Versão 1.0.0. [S. l.]: 3DBAG, 2026. Software (licença GPL-3.0). Disponível em: <a href="https://github.com/3DBAG/roofer">https://github.com/3DBAG/roofer</a>. Acesso em: 28 out. 2026.</li>
+    <li>APAGÃO de novembro de 2023: promessas não cumpridas e SP novamente em alerta. <strong>SBT News</strong>, [S. l.], 15 out. 2024. Disponível em: <a href="https://sbtnews.sbt.com.br/noticia/brasil/apagao-de-novembro-de-2023-promessas-nao-cumpridas-e-sp-novamente-em-alerta">https://sbtnews.sbt.com.br/noticia/brasil/apagao-de-novembro-de-2023-promessas-nao-cumpridas-e-sp-novamente-em-alerta</a>. Acesso em: 28 out. 2026.</li>
+    <li>ARMAGAN, A. et al. Learning to align semantic segmentation and 2.5D maps for geolocalization. In: IEEE CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (CVPR), 2017, Honolulu. <strong>Proceedings</strong> [...]. [S. l.]: IEEE, 2017. p. 3425-3432. DOI: <a href="https://doi.org/10.1109/CVPR.2017.488">10.1109/CVPR.2017.488</a>.</li>
+    <li>BALESTRA, M. et al. UAV-spherical data fusion approach to estimate individual tree carbon stock for urban green planning and management. <strong>Remote Sensing</strong>, Basel, v. 16, n. 12, art. 2110, 2024. DOI: <a href="https://doi.org/10.3390/rs16122110">10.3390/rs16122110</a>.</li>
+    <li>BARAZZETTI, L.; PREVITALI, M.; RONCORONI, F. Can we use low-cost 360 degree cameras to create accurate 3D models? <strong>The International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences</strong>, Göttingen, v. XLII-2, p. 69-75, 2018. DOI: <a href="https://doi.org/10.5194/isprs-archives-XLII-2-69-2018">10.5194/isprs-archives-XLII-2-69-2018</a>.</li>
+    <li>BEERY, S. et al. The Auto Arborist dataset: a large-scale benchmark for multiview urban forest monitoring under domain shift. In: IEEE/CVF CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (CVPR), 2022, New Orleans. <strong>Proceedings</strong> [...]. [S. l.]: IEEE, 2022. p. 21294-21307. DOI: <a href="https://doi.org/10.1109/CVPR52688.2022.02061">10.1109/CVPR52688.2022.02061</a>.</li>
+    <li>BODENSTEINER, C. et al. Single frame based video geo-localisation using structure projection. In: IEEE INTERNATIONAL CONFERENCE ON COMPUTER VISION WORKSHOPS (ICCVW), 2015, Santiago. <strong>Proceedings</strong> [...]. [S. l.]: IEEE, 2015. p. 1036-1043. DOI: <a href="https://doi.org/10.1109/ICCVW.2015.136">10.1109/ICCVW.2015.136</a>.</li>
+    <li>CUI, T. et al. Line-based registration of panoramic images and LiDAR point clouds for mobile mapping. <strong>Sensors</strong>, Basel, v. 17, n. 1, art. 70, 2017. DOI: <a href="https://doi.org/10.3390/s17010070">10.3390/s17010070</a>.</li>
+    <li>ENEL: 660 mil clientes residenciais e comerciais seguem sem energia após 51 horas. <strong>Bloomberg Línea</strong>, [S. l.], 14 out. 2024. Disponível em: <a href="https://www.bloomberglinea.com.br/negocios/enel-nao-da-previsao-para-volta-de-energia-em-sp-e-aneel-e-governo-apontam-falhas/">https://www.bloomberglinea.com.br/negocios/enel-nao-da-previsao-para-volta-de-energia-em-sp-e-aneel-e-governo-apontam-falhas/</a>. Acesso em: 28 out. 2026.</li>
+    <li>ESTADÃO CONTEÚDO. Enel cumpriu só 11% de plano anual de podas de árvores em SP, diz gestão Nunes: 'Pífio'. <strong>eixos</strong>, [S. l.], 16 dez. 2025. Disponível em: <a href="https://eixos.com.br/energia-eletrica/enel-cumpriu-so-11-de-plano-anual-de-podas-de-arvores-em-sp-diz-gestao-nunes-pifio/">https://eixos.com.br/energia-eletrica/enel-cumpriu-so-11-de-plano-anual-de-podas-de-arvores-em-sp-diz-gestao-nunes-pifio/</a>. Acesso em: 28 out. 2026.</li>
+    <li>ESTADÃO CONTEÚDO. Enel diz que apagão em SP afetou 4,4 milhões de clientes, o dobro do divulgado anteriormente. <strong>eixos</strong>, [S. l.], 14 jan. 2026. Disponível em: <a href="https://eixos.com.br/energia-eletrica/enel-diz-que-apagao-em-sp-afetou-44-milhoes-de-clientes-o-dobro-do-divulgado-anteriormente/">https://eixos.com.br/energia-eletrica/enel-diz-que-apagao-em-sp-afetou-44-milhoes-de-clientes-o-dobro-do-divulgado-anteriormente/</a>. Acesso em: 28 out. 2026.</li>
+    <li>GLIRA, P.; PFEIFER, N.; MANDLBURGER, G. Hybrid orientation of airborne lidar point clouds and aerial images. <strong>ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial Information Sciences</strong>, Göttingen, v. IV-2/W5, p. 567-574, 2019. DOI: <a href="https://doi.org/10.5194/isprs-annals-IV-2-W5-567-2019">10.5194/isprs-annals-IV-2-W5-567-2019</a>.</li>
+    <li>LEI, B. et al. Challenges of urban digital twins: a systematic review and a Delphi expert survey. <strong>Automation in Construction</strong>, Amsterdam, v. 147, art. 104716, 2023. DOI: <a href="https://doi.org/10.1016/j.autcon.2022.104716">10.1016/j.autcon.2022.104716</a>.</li>
+    <li>LIGABUE, Rebeca. Inventário de árvores da Prefeitura de SP não cumpre promessa. <strong>Metrópoles</strong>, [S. l.], 1 mar. 2026. Disponível em: <a href="https://www.metropoles.com/sao-paulo/prefeitura-19-milhoes-inventario-arvores">https://www.metropoles.com/sao-paulo/prefeitura-19-milhoes-inventario-arvores</a>. Acesso em: 28 out. 2026.</li>
+    <li>MAIS de 30 mil clientes seguem sem energia em SP, cinco dias após ciclone. <strong>Conexão Tocantins</strong>, [S. l.], 15 dez. 2025. Disponível em: <a href="https://conexaoto.com.br/2025/12/15/mais-de-30-mil-clientes-seguem-sem-energia-em-sp-cinco-dias-apos-ciclone">https://conexaoto.com.br/2025/12/15/mais-de-30-mil-clientes-seguem-sem-energia-em-sp-cinco-dias-apos-ciclone</a>. Acesso em: 28 out. 2026.</li>
+    <li>OPEN GEOSPATIAL CONSORTIUM. <strong>OGC City Geography Markup Language (CityGML) Part 1: Conceptual Model Standard</strong>. Versão 3.0.0. [S. l.]: OGC, 2021. (OGC 20-010). Disponível em: <a href="https://docs.ogc.org/is/20-010/20-010.html">https://docs.ogc.org/is/20-010/20-010.html</a>. Acesso em: 28 out. 2026.</li>
+    <li>PETERS, R. et al. Automated 3D reconstruction of LoD2 and LoD1 models for all 10 million buildings of the Netherlands. <strong>Photogrammetric Engineering &amp; Remote Sensing</strong>, [S. l.], v. 88, n. 3, p. 165-170, 2022. DOI: <a href="https://doi.org/10.14358/PERS.21-00032R2">10.14358/PERS.21-00032R2</a>.</li>
+    <li>PREFEITURA DE SÃO PAULO. <strong>GeoSampa</strong>: mapa digital da cidade de São Paulo. São Paulo, [s. d.]. Disponível em: <a href="https://geosampa.prefeitura.sp.gov.br/">https://geosampa.prefeitura.sp.gov.br/</a>. Acesso em: 28 out. 2026.</li>
+    <li>PREFEITURA DE SÃO PAULO. Prefeitura investe R$ 18,8 milhões em sistema inédito no Brasil que usa laser, 3D e inteligência artificial para catalogar e monitorar árvores. <strong>Prefeitura de São Paulo</strong>, São Paulo, 12 set. 2025. Disponível em: <a href="https://prefeitura.sp.gov.br/w/prefeitura-investe-r-18-8-milh%C3%B5es-em-sistema-in%C3%A9dito-no-brasil-que-usa-laser-3d-e-intelig%C3%AAncia-artificial-para-catalogar-e-monitorar-%C3%A1rvores">https://prefeitura.sp.gov.br/w/prefeitura-investe-r-18-8-milh%C3%B5es-em-sistema-in%C3%A9dito-no-brasil-que-usa-laser-3d-e-intelig%C3%AAncia-artificial-para-catalogar-e-monitorar-%C3%A1rvores</a>. Acesso em: 28 out. 2026.</li>
+    <li>RAMALINGAM, S. et al. SKYLINE2GPS: localization in urban canyons using omni-skylines. In: IEEE/RSJ INTERNATIONAL CONFERENCE ON INTELLIGENT ROBOTS AND SYSTEMS (IROS), 2010, Taipei. <strong>Proceedings</strong> [...]. [S. l.]: IEEE, 2010. p. 3816-3823. DOI: <a href="https://doi.org/10.1109/IROS.2010.5649105">10.1109/IROS.2010.5649105</a>.</li>
+    <li>RODRÍGUEZ-PUERTA, F. et al. Mapping tree canopy in urban environments using point clouds from airborne laser scanning and street level imagery. <strong>Sensors</strong>, Basel, v. 22, n. 9, art. 3269, 2022. DOI: <a href="https://doi.org/10.3390/s22093269">10.3390/s22093269</a>.</li>
+    <li>SANDE, C. van der; SOUDARISSANANE, S.; KHOSHELHAM, K. Assessment of relative accuracy of AHN-2 laser scanning data using planar features. <strong>Sensors</strong>, Basel, v. 10, n. 9, p. 8198-8214, 2010. DOI: <a href="https://doi.org/10.3390/s100908198">10.3390/s100908198</a>.</li>
+    <li>SANTOS, A. et al. Storm-drain and manhole detection using the RetinaNet method. <strong>Sensors</strong>, Basel, v. 20, n. 16, art. 4450, 2020. DOI: <a href="https://doi.org/10.3390/s20164450">10.3390/s20164450</a>.</li>
+    <li>SÃO PAULO (Município). Secretaria Executiva de Mudanças Climáticas. <strong>Plano de Ação Climática do Município de São Paulo – PlanClima SP</strong>: revisão 2025: versão final pré-publicação. São Paulo: SECLIMA, 2026. 209 p. Disponível em: <a href="https://prefeitura.sp.gov.br/documents/d/secretaria_executiva_de_mudancas_climaticas/versao-final-plano-de-acao-climatica-do-municipio-de-sao-paulo-revisao-2025-pdf">https://prefeitura.sp.gov.br/documents/d/secretaria_executiva_de_mudancas_climaticas/versao-final-plano-de-acao-climatica-do-municipio-de-sao-paulo-revisao-2025-pdf</a>. Acesso em: 28 out. 2026.</li>
+    <li>SÃO PAULO (Município). Secretaria Municipal do Verde e do Meio Ambiente. Divisão de Arborização Urbana. <strong>Relatório Anual da Gestão da Arborização Urbana 2022</strong>. São Paulo: SVMA, [2024?]. 55 p. Disponível em: <a href="https://prefeitura.sp.gov.br/documents/d/meio_ambiente/relatorio-gestao-arborizacao_2022-pdf">https://prefeitura.sp.gov.br/documents/d/meio_ambiente/relatorio-gestao-arborizacao_2022-pdf</a>. Acesso em: 28 out. 2026.</li>
+    <li>SIMON, J.; OSTER, J.; BECK, C. Exploring the role of urban green spaces in microclimate modeling: insights from ENVI-met simulations in Augsburg, Germany. In: EGU GENERAL ASSEMBLY, 2025. <strong>Abstracts</strong> [...]. Göttingen: Copernicus GmbH, 2025. EGU25-17996. DOI: <a href="https://doi.org/10.5194/egusphere-egu25-17996">10.5194/egusphere-egu25-17996</a>.</li>
+    <li>SIMON, J.; OSTER, J.; BECK, C. Impact of tree representation on urban climate modelling: insights from ENVI-met simulations in Augsburg, Germany. <strong>Urban Climate</strong>, Amsterdam, v. 67, art. 102879, 2026. DOI: <a href="https://doi.org/10.1016/j.uclim.2026.102879">10.1016/j.uclim.2026.102879</a>.</li>
+    <li>TANEJA, A.; BALLAN, L.; POLLEFEYS, M. Registration of spherical panoramic images with cadastral 3D models. In: INTERNATIONAL CONFERENCE ON 3D IMAGING, MODELING, PROCESSING, VISUALIZATION AND TRANSMISSION (3DIMPVT), 2., 2012, Zurich. <strong>Proceedings</strong> [...]. [S. l.]: IEEE, 2012. p. 479-486. DOI: <a href="https://doi.org/10.1109/3DIMPVT.2012.45">10.1109/3DIMPVT.2012.45</a>.</li>
+    <li>VOSSELMAN, G. Analysis of planimetric accuracy of airborne laser scanning surveys. In: ISPRS CONGRESS, 21., 2008, Beijing. <strong>The International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences</strong>, v. 37, pt. B3a. [S. l.]: ISPRS, 2008. p. 99-104. Disponível em: <a href="https://www.isprs.org/proceedings/XXXVII/congress/3_pdf/15.pdf">https://www.isprs.org/proceedings/XXXVII/congress/3_pdf/15.pdf</a>. Acesso em: 28 out. 2026.</li>
+    <li>WANG, X. et al. Fine-grained cross-view geo-localization using a correlation-aware homography estimator. In: CONFERENCE ON NEURAL INFORMATION PROCESSING SYSTEMS (NEURIPS), 37., 2023, New Orleans. <strong>Advances in neural information processing systems 36</strong> [...]. [S. l.]: Neural Information Processing Systems Foundation, 2023. p. 5301-5319. DOI: <a href="https://doi.org/10.52202/075280-0234">10.52202/075280-0234</a>.</li>
+    <li>WEGNER, J. D. et al. Cataloging public objects using aerial and street-level images: urban trees. In: IEEE CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (CVPR), 2016, Las Vegas. <strong>Proceedings</strong> [...]. [S. l.]: IEEE, 2016. p. 6014-6023. DOI: <a href="https://doi.org/10.1109/CVPR.2016.647">10.1109/CVPR.2016.647</a>.</li>
+    <li>WEIL, C. et al. Urban digital twin challenges: a systematic review and perspectives for sustainable smart cities. <strong>Sustainable Cities and Society</strong>, Amsterdam, v. 99, art. 104862, 2023. DOI: <a href="https://doi.org/10.1016/j.scs.2023.104862">10.1016/j.scs.2023.104862</a>.</li>
+    <li>XIA, Z.; BOOIJ, O.; KOOIJ, J. F. P. Convolutional cross-view pose estimation. <strong>IEEE Transactions on Pattern Analysis and Machine Intelligence</strong>, [S. l.], v. 46, n. 5, p. 3813-3831, 2024. DOI: <a href="https://doi.org/10.1109/TPAMI.2023.3346924">10.1109/TPAMI.2023.3346924</a>.</li>
+    <li>ZHU, J. et al. LoD-Loc v2: aerial visual localization over low level-of-detail city models using explicit silhouette alignment. In: IEEE/CVF INTERNATIONAL CONFERENCE ON COMPUTER VISION (ICCV), 2025, Honolulu. <strong>Proceedings</strong> [...]. [S. l.]: IEEE, 2025. p. 26610-26621. DOI: <a href="https://doi.org/10.1109/ICCV51701.2025.02470">10.1109/ICCV51701.2025.02470</a>.</li>
+    <li>ZHU, N.; JIA, Y.; JI, S. Registration of panoramic/fish-eye image sequence and LiDAR points using skyline features. <strong>Sensors</strong>, Basel, v. 18, n. 5, art. 1651, 2018. DOI: <a href="https://doi.org/10.3390/s18051651">10.3390/s18051651</a>.</li>
+  </ol>
+</section>
+</main>
+
+<footer class="rodape">
+  Resultados preliminares do projeto Alinhamento360 (out/2026). LiDAR 2017: Prefeitura de São Paulo. Viewers 3D com Potree 1.8
+  (licença BSD). Fotos publicadas com rostos e veículos desfocados.
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

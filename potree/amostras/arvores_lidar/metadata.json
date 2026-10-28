@@ -1,0 +1,88 @@
+{
+ "version": "2.0",
+ "name": "arvores_lidar",
+ "description": "",
+ "points": 468840,
+ "projection": "+proj=utm +zone=23 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+ "hierarchy": {
+  "firstChunkSize": 2090,
+  "stepSize": 32,
+  "depth": 3
+ },
+ "offset": [
+  348235.0,
+  7395185.0,
+  789.07
+ ],
+ "scale": [
+  0.001,
+  0.001,
+  0.001
+ ],
+ "spacing": 1.4845234375,
+ "boundingBox": {
+  "min": [
+   348235.0,
+   7395185.0,
+   789.07
+  ],
+  "max": [
+   348425.019,
+   7395375.019,
+   979.089
+  ]
+ },
+ "encoding": "DEFAULT",
+ "attributes": [
+  {
+   "name": "position",
+   "description": "",
+   "size": 12,
+   "numElements": 3,
+   "elementSize": 4,
+   "type": "int32",
+   "min": [
+    348235.0,
+    7395185.0,
+    789.07
+   ],
+   "max": [
+    348425.0,
+    7395335.0,
+    825.87
+   ]
+  },
+  {
+   "name": "rgb",
+   "description": "",
+   "size": 6,
+   "numElements": 3,
+   "elementSize": 2,
+   "type": "uint16",
+   "min": [
+    0,
+    0,
+    512
+   ],
+   "max": [
+    64768,
+    63488,
+    62464
+   ]
+  },
+  {
+   "name": "classification",
+   "description": "",
+   "size": 1,
+   "numElements": 1,
+   "elementSize": 1,
+   "type": "uint8",
+   "min": [
+    2
+   ],
+   "max": [
+    20
+   ]
+  }
+ ]
+}

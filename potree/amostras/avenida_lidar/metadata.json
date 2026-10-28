@@ -1,0 +1,88 @@
+{
+ "version": "2.0",
+ "name": "avenida_lidar",
+ "description": "",
+ "points": 1011895,
+ "projection": "+proj=utm +zone=23 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+ "hierarchy": {
+  "firstChunkSize": 3806,
+  "stepSize": 32,
+  "depth": 4
+ },
+ "offset": [
+  332290.0,
+  7394820.0,
+  734.67
+ ],
+ "scale": [
+  0.001,
+  0.001,
+  0.001
+ ],
+ "spacing": 2.969046875,
+ "boundingBox": {
+  "min": [
+   332290.0,
+   7394820.0,
+   734.67
+  ],
+  "max": [
+   332670.038,
+   7395200.038,
+   1114.708
+  ]
+ },
+ "encoding": "DEFAULT",
+ "attributes": [
+  {
+   "name": "position",
+   "description": "",
+   "size": 12,
+   "numElements": 3,
+   "elementSize": 4,
+   "type": "int32",
+   "min": [
+    332290.0,
+    7394820.0,
+    734.67
+   ],
+   "max": [
+    332670.0,
+    7394980.0,
+    849.76
+   ]
+  },
+  {
+   "name": "rgb",
+   "description": "",
+   "size": 6,
+   "numElements": 3,
+   "elementSize": 2,
+   "type": "uint16",
+   "min": [
+    0,
+    0,
+    0
+   ],
+   "max": [
+    64512,
+    64512,
+    64512
+   ]
+  },
+  {
+   "name": "classification",
+   "description": "",
+   "size": 1,
+   "numElements": 1,
+   "elementSize": 1,
+   "type": "uint8",
+   "min": [
+    2
+   ],
+   "max": [
+    20
+   ]
+  }
+ ]
+}

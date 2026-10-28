@@ -1,0 +1,88 @@
+{
+ "version": "2.0",
+ "name": "avenida_cameras",
+ "description": "",
+ "points": 28724,
+ "projection": "+proj=utm +zone=23 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+ "hierarchy": {
+  "firstChunkSize": 66,
+  "stepSize": 32,
+  "depth": 1
+ },
+ "offset": [
+  332318.2257593845,
+  7394865.867781347,
+  742.97775
+ ],
+ "scale": [
+  0.001,
+  0.001,
+  0.001
+ ],
+ "spacing": 2.4071475470691954,
+ "boundingBox": {
+  "min": [
+   332318.2257593845,
+   7394865.867781347,
+   742.97775
+  ],
+  "max": [
+   332626.34064540936,
+   7395173.982667372,
+   1051.092636024857
+  ]
+ },
+ "encoding": "DEFAULT",
+ "attributes": [
+  {
+   "name": "position",
+   "description": "",
+   "size": 12,
+   "numElements": 3,
+   "elementSize": 4,
+   "type": "int32",
+   "min": [
+    332318.2257593845,
+    7394865.867781347,
+    742.97775
+   ],
+   "max": [
+    332626.3098370016,
+    7394932.489703398,
+    758.9369759854004
+   ]
+  },
+  {
+   "name": "rgb",
+   "description": "",
+   "size": 6,
+   "numElements": 3,
+   "elementSize": 2,
+   "type": "uint16",
+   "min": [
+    8481,
+    24672,
+    19789
+   ],
+   "max": [
+    54998,
+    38550,
+    44204
+   ]
+  },
+  {
+   "name": "classification",
+   "description": "",
+   "size": 1,
+   "numElements": 1,
+   "elementSize": 1,
+   "type": "uint8",
+   "min": [
+    60
+   ],
+   "max": [
+    62
+   ]
+  }
+ ]
+}

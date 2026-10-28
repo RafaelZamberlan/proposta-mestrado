@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Viewer 3D</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%275%27 fill=%27%231f5f8b%27/%3E%3Cpath d=%27M16 5v22M5 16h22%27 stroke=%27%23fff%27 stroke-width=%272%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276.5%27 fill=%27none%27 stroke=%27%23fff%27 stroke-width=%272%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="libs/potree/potree.css">
+<style>
+  :root {
+    --fundo: #e9e7e1; --painel: rgba(250, 249, 246, .92); --tinta: #1d2125; --tinta2: #5a6067; --linha: #c9c6be;
+    --destaque: #1f5f8b; --gps: #c2513f; --ajustada: #2166ac;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-tema="claro"]) {
+      --fundo: #15181b; --painel: rgba(28, 32, 36, .9); --tinta: #e7e5df; --tinta2: #a3a8ad; --linha: #3a4046;
+      --destaque: #7fb2d6; --gps: #e07a66; --ajustada: #6fa8dc;
+    }
+  }
+  :root[data-tema="escuro"] {
+    --fundo: #15181b; --painel: rgba(28, 32, 36, .9); --tinta: #e7e5df; --tinta2: #a3a8ad; --linha: #3a4046;
+    --destaque: #7fb2d6; --gps: #e07a66; --ajustada: #6fa8dc;
+  }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--fundo); color: var(--tinta);
+    font: 13px/1.4 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  #render { position: absolute; inset: 0; }
+  #titulo { position: absolute; top: 0; left: 0; right: 0; padding: 8px 12px; background: var(--painel);
+    border-bottom: 1px solid var(--linha); font-size: 12.5px; z-index: 10; }
+  #painel { position: absolute; left: 10px; bottom: 10px; max-width: min(300px, calc(100% - 20px)); padding: 10px 12px;
+    background: var(--painel); border: 1px solid var(--linha); border-radius: 6px; z-index: 10; }
+  #painel h2 { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--tinta2); margin: 8px 0 4px;
+    font-weight: 600; }
+  #painel h2:first-child { margin-top: 0; }
+  #painel label { display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 1px 0; }
+  #painel input { accent-color: var(--destaque); margin: 0; }
+  .amostra { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex: none; }
+  .bolinha { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
+  .chips { display: flex; gap: 4px; flex-wrap: wrap; }
+  .chips button { font: inherit; font-size: 12px; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--linha);
+    background: transparent; color: var(--tinta); cursor: pointer; }
+  .chips button.ativo { background: var(--destaque); border-color: var(--destaque); color: #fff; }
+  #dica { position: absolute; right: 10px; bottom: 10px; font-size: 11.5px; color: var(--tinta2); background: var(--painel);
+    border: 1px solid var(--linha); border-radius: 6px; padding: 6px 9px; z-index: 10; text-align: right; }
+  #dica button { font: inherit; margin-top: 4px; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--linha);
+    background: transparent; color: var(--tinta); cursor: pointer; }
+  #carregando { position: absolute; inset: 0; display: grid; place-items: center; color: var(--tinta2); z-index: 5;
+    pointer-events: none; }
+  .potree_annotation { font: 600 11.5px/1 "IBM Plex Sans", system-ui, sans-serif !important; }
+  .annotation-titlebar { background: var(--painel) !important; color: var(--tinta) !important;
+    border: 1px solid var(--linha) !important; border-radius: 4px !important; padding: 3px 6px !important; }
+  @media (max-width: 560px) {
+    #painel { font-size: 12px; padding: 8px 10px; }
+    #dica { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="render"></div>
+<div id="carregando">carregando a nuvem…</div>
+<div id="titulo"></div>
+<div id="painel"></div>
+<div id="dica">arraste para girar · botão direito move · roda aproxima<br><button id="voltar">vista inicial</button></div>
+
+<script src="libs/jquery/jquery-3.1.1.min.js"></script>
+<script src="libs/other/BinaryHeap.js"></script>
+<script src="libs/tween/tween.min.js"></script>
+<script src="libs/proj4/proj4.js"></script>
+<script src="libs/potree/potree.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const NOME = params.get('v') || 'avenida';
+  if (params.get('tema')) document.documentElement.dataset.tema = params.get('tema');
+  window.addEventListener('message', ev => {
+    if (ev.data && ev.data.tema) document.documentElement.dataset.tema = ev.data.tema;
+  });
+
+  // cores por classe: as do LiDAR (2/20 chão, 5 vegetação, 6 prédio, 19 outros) e as próprias das amostras
+  const CORES = {
+    2: '#8d8577', 20: '#8d8577', 5: '#5b9a48', 6: '#c7bfb1', 19: '#d4a63c',
+    60: '#d6604d', 61: '#2166ac', 62: '#9a9a9a', 70: '#bbbbbb',
+    81: '#2e9e4f', 82: '#4a90e2', 83: '#8b5a2b',
+  };
+  const hexRGB = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
+
+  const viewer = new Potree.Viewer(document.getElementById('render'), { noDragAndDrop: true });
+  viewer.setEDLEnabled(true); viewer.setEDLRadius(1.4); viewer.setEDLStrength(0.35);
+  viewer.setFOV(55); viewer.setPointBudget(4_000_000); viewer.setBackground('none');
+  viewer.setMinNodeSize(5);                    // amostras pequenas: carrega tudo o que couber no orçamento
+  viewer.setControls(viewer.orbitControls);
+  window.viewer = viewer;
+
+  const nuvens = {};
+  fetch(`amostras/${NOME}/config.json`).then(r => r.json()).then(cfg => {
+    document.getElementById('titulo').textContent = cfg.titulo;
+    document.title = 'Viewer 3D · ' + NOME;
+    const cores = Object.assign({}, CORES, cfg.cores || {});
+    const esquema = { DEFAULT: { visible: true, name: 'outra', color: [0.6, 0.6, 0.6, 1] } };
+    for (const [k, h] of Object.entries(cores)) esquema[k] = { visible: true, name: k, color: [...hexRGB(h), 1] };
+    viewer.setClassifications(esquema);
+
+    const v = cfg.vista;
+    const vistaInicial = () => viewer.scene.view.setView(v.posicao, v.alvo);
+    vistaInicial();
+    document.getElementById('voltar').onclick = vistaInicial;
+
+    let faltam = cfg.camadas.length;
+    for (const c of cfg.camadas) {
+      Potree.loadPointCloud(c.caminho, c.nome, e => {
+        const pc = e.pointcloud, m = pc.material;
+        m.size = c.tamanho; m.pointSizeType = Potree.PointSizeType.FIXED;
+        m.activeAttributeName = c.cor === 'classe' ? 'classification' : 'rgba';
+        if (c.brilho) m.rgbBrightness = c.brilho;
+        pc.visible = c.visivel;
+        viewer.scene.addPointCloud(pc);
+        nuvens[c.id] = pc;
+        if (--faltam === 0) { document.getElementById('carregando').remove(); vistaInicial(); }
+      });
+    }
+    for (const r of cfg.rotulos || []) {
+      viewer.scene.annotations.add(new Potree.Annotation({ position: r.posicao, title: r.texto }));
+    }
+    montarPainel(cfg, cores);
+  });
+
+  function montarPainel(cfg, cores) {
+    const p = document.getElementById('painel');
+    let html = '<h2>Camadas</h2>';
+    for (const c of cfg.camadas) {
+      html += `<label><input type="checkbox" data-camada="${c.id}" ${c.visivel ? 'checked' : ''}>${c.nome}</label>`;
+    }
+    const lidar = cfg.camadas.find(c => c.id === 'lidar');
+    if (lidar && cfg.grupos) {
+      html += '<h2>LiDAR por classe</h2>';
+      for (const g of cfg.grupos) {
+        html += `<label><input type="checkbox" data-classes="${g.classes.join(',')}" checked>` +
+                `<span class="amostra" style="background:${cores[g.classes[0]]}"></span>${g.nome}</label>`;
+      }
+      html += '<h2>Cor do LiDAR</h2><div class="chips">' +
+              `<button data-corlidar="classification" class="${lidar.cor === 'classe' ? 'ativo' : ''}">classe</button>` +
+              `<button data-corlidar="rgba" class="${lidar.cor !== 'classe' ? 'ativo' : ''}">cor real</button></div>`;
+    }
+    if (cfg.camadas.some(c => c.id === 'cameras') && NOME === 'avenida') {
+      html += '<h2>Câmeras</h2>' +
+              `<label style="cursor:default"><span class="bolinha" style="background:${cores[60]}"></span>GPS da GoPro</label>` +
+              `<label style="cursor:default"><span class="bolinha" style="background:${cores[61]}"></span>pose ajustada</label>`;
+    }
+    if (NOME === 'arvores') {
+      html += '<h2>Modelo de cada árvore</h2>';
+      for (const [k, n] of [[81, 'LiDAR da copa'], [82, 'casco pelas fotos'], [83, 'tronco']]) {
+        html += `<label><input type="checkbox" data-classes="${k}" checked><span class="amostra" style="background:${cores[k]}"></span>${n}</label>`;
+      }
+    }
+    p.innerHTML = html;
+    p.querySelectorAll('[data-camada]').forEach(i => i.onchange = () => {
+      const pc = nuvens[i.dataset.camada];
+      if (pc) pc.visible = i.checked;
+    });
+    p.querySelectorAll('[data-classes]').forEach(i => i.onchange = () => {
+      for (const k of i.dataset.classes.split(',')) viewer.setClassificationVisibility(+k, i.checked);
+    });
+    p.querySelectorAll('[data-corlidar]').forEach(b => b.onclick = () => {
+      p.querySelectorAll('[data-corlidar]').forEach(x => x.classList.toggle('ativo', x === b));
+      if (nuvens.lidar) nuvens.lidar.material.activeAttributeName = b.dataset.corlidar;
+    });
+  }
+
+  // prévia estática para o site (só na montagem, pelo servidor local): a área de desenho vai a largura × altura,
+  // espera o LOD carregar, renderiza e devolve o quadro em JPEG sobre o fundo dado
+  window.capturar = async (largura = 1200, altura = 675, fundo = '#15181b', espera = 4000) => {
+    const area = document.getElementById('render');
+    Object.assign(area.style, { width: largura + 'px', height: altura + 'px', right: 'auto', bottom: 'auto' });
+    await new Promise(r => setTimeout(r, espera));
+    viewer.render();
+    const tela = document.createElement('canvas'); tela.width = largura; tela.height = altura;
+    const ctx = tela.getContext('2d'); ctx.fillStyle = fundo; ctx.fillRect(0, 0, largura, altura);
+    ctx.drawImage(viewer.renderer.domElement, 0, 0, largura, altura);
+    Object.assign(area.style, { width: '', height: '', right: '', bottom: '' });
+    return tela.toDataURL('image/jpeg', 0.86);
+  };
+</script>
+</body>
+</html>

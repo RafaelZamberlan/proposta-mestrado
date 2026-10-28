@@ -43,14 +43,6 @@
 
   <p class="autor autor-topo"><strong>Rafael Hilarion de Oliveira Zamberlan</strong> · Gestão Ambiental, EACH-USP</p>
 
-  <figure class="largo destaque-fig">
-    <div class="comparar" data-rotulos="com o GPS|com a pose ajustada">
-      <img src="fig/tcc_gps.jpg" alt="Foto 360 com os contornos dos prédios desalinhados, na posição do GPS" width="1200" height="675">
-      <img class="depois" src="fig/tcc_ajustada.jpg" alt="A mesma foto com os contornos dos prédios encaixados nas quinas e no telhado, na pose ajustada" width="1200" height="675">
-    </div>
-    <figcaption><strong>Arraste a barra.</strong> As linhas azuis são os prédios do cadastro da Prefeitura (GeoSampa). Com o GPS, a
-      foto fica fora do lugar e eles não encaixam. Com a pose ajustada, encaixam.</figcaption>
-  </figure>
   <a class="chamada-3d" href="#ver3d">Ver em 3D, passo a passo <span aria-hidden="true">↓</span></a>
 </section>
 
@@ -109,14 +101,23 @@
           ficam soltas no céu. Com a pose ajustada, caem nas quinas e nos telhados. Pessoas e veículos desfocados.
           <span class="selo">Resultados preliminares, Alinhamento360, out/2026.</span></figcaption>
       </figure>
+      <figure>
+        <div class="comparar" data-rotulos="com o GPS|com a pose ajustada">
+          <img src="fig/tcc_gps.jpg" alt="Foto 360 de uma rua do TCC com os contornos dos prédios desalinhados, na posição do GPS" width="1200" height="675" loading="lazy">
+          <img class="depois" src="fig/tcc_ajustada.jpg" alt="A mesma foto com os contornos dos prédios encaixados na quina e no telhado, na pose ajustada" width="1200" height="675" loading="lazy">
+        </div>
+        <figcaption><strong>O mesmo numa rua do TCC</strong>, com outra câmera (Ladybug, no teto de um carro). Com o GPS, os prédios
+          do GeoSampa não encaixam; com a pose ajustada, caem na quina e no telhado. <span class="selo">Resultados preliminares,
+          Alinhamento360, out/2026.</span></figcaption>
+      </figure>
       <h4>Conferido com réguas que não entraram no ajuste</h4>
       <ul class="coluna conferencias">
         <li><strong>±0,26 m</strong> entre as fachadas da nuvem refeita pelas fotos e as paredes do LiDAR.</li>
         <li><strong>0,14° e 0,04°</strong> de erro em 2 quinas de prédio marcadas à mão e deixadas fora do ajuste.</li>
         <li><strong>−0,02 m</strong> ao longo da via, segundo as edificações do GeoSampa.</li>
       </ul>
-      <p class="nota aviso coluna">Ainda falta a precisão absoluta: só um levantamento de campo com GNSS diz qual faixa de voo do LiDAR
-        está certa. As faixas de ida e volta discordam ~0,2 m entre si.</p>
+      <p class="nota aviso coluna">Esses erros são em relação ao LiDAR 2017, que tem os seus: as faixas de voo de ida e volta
+        discordam ~0,2 m entre si.</p>
       <details class="descartados coluna">
         <summary>Detalhes técnicos: o que mais se descobriu e o que foi descartado</summary>
         <ul>
@@ -309,8 +310,6 @@
   <div class="rotulo-secao">O mestrado</div>
   <h2>Perguntas</h2>
   <ol class="coluna">
-    <li><strong>Precisão absoluta.</strong> Qual o erro contra pontos de controle medidos em campo com GNSS RTK? Hoje não se sabe
-      qual faixa de voo do LiDAR está certa.</li>
     <li><strong>Escala.</strong> O método se mantém em trajetórias completas (1.500 a 3.500 fotos)? O ajuste conjunto de fotos
       vizinhas resolve as ruas com poucos prédios à vista? Qual a taxa de sucesso por tipo de cena: avenida, rua estreita, debaixo de
       copa, céu nublado?</li>

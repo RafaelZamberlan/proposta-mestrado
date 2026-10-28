@@ -166,7 +166,7 @@
     const caixa = document.getElementById('crono');
     const itens = [
       { nome: 'Disciplinas obrigatórias (SUS5000 Metodologias de Pesquisa em Sustentabilidade, SUS5002 Sustentabilidade) e revisão sistemática', de: 1, ate: 6 },
-      { nome: 'Campo: pontos de controle com GNSS RTK e DAP na área já processada', de: 1, ate: 6 },
+      { nome: 'Campo: DAP e altura das árvores na área já processada', de: 1, ate: 6 },
       { nome: 'Escala: trajetórias completas, janela de fotos vizinhas, taxa de sucesso por cena, comparação com GPS e métodos cross-view', de: 4, ate: 12 },
       { nome: 'Inventário multiclasse na área piloto e validação de campo', de: 10, ate: 16 },
       { nome: 'Exame de qualificação (por volta do mês 12, conforme a norma do programa)', marco: 12 },

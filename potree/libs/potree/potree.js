@@ -66370,7 +66370,7 @@ void main() {
 				}else {
 					let response = await fetch(urlOctree, {
 						headers: {
-							'content-type': 'multipart/byteranges',
+							// sem 'content-type': o GitHub Pages devolve 400 num GET com esse cabeçalho (Alinhamento360)
 							'Range': `bytes=${first}-${last}`,
 						},
 					});
@@ -66574,7 +66574,7 @@ void main() {
 
 			let response = await fetch(hierarchyPath, {
 				headers: {
-					'content-type': 'multipart/byteranges',
+					// sem 'content-type': o GitHub Pages devolve 400 num GET com esse cabeçalho (Alinhamento360)
 					'Range': `bytes=${first}-${last}`,
 				},
 			});

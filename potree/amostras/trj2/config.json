@@ -6,7 +6,7 @@
    "nome": "LiDAR 2017",
    "caminho": "amostras/arvores_lidar/metadata.json",
    "cor": "classe",
-   "tamanho": 2.2,
+   "tamanho": 1.8,
    "visivel": true
   },
   {
@@ -16,7 +16,7 @@
    "pontos": 367923,
    "mb": 7.0,
    "cor": "rgb",
-   "tamanho": 2.8,
+   "tamanho": 2.2,
    "visivel": true,
    "brilho": 0.3
   },
@@ -27,7 +27,7 @@
    "pontos": 4800,
    "mb": 0.1,
    "cor": "rgb",
-   "tamanho": 3.0,
+   "tamanho": 4.0,
    "visivel": true
   }
  ],

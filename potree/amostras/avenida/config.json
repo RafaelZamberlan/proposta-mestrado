@@ -8,7 +8,7 @@
    "pontos": 1011895,
    "mb": 19.2,
    "cor": "classe",
-   "tamanho": 3.0,
+   "tamanho": 1.8,
    "visivel": true
   },
   {
@@ -18,7 +18,7 @@
    "pontos": 907798,
    "mb": 17.3,
    "cor": "rgb",
-   "tamanho": 2.5,
+   "tamanho": 1.8,
    "visivel": true
   },
   {
@@ -28,7 +28,7 @@
    "pontos": 28724,
    "mb": 0.5,
    "cor": "rgb",
-   "tamanho": 3.0,
+   "tamanho": 4.0,
    "visivel": true
   }
  ],

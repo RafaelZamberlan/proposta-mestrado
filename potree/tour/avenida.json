@@ -127,21 +127,22 @@
    "linhas": true
   },
   {
-   "titulo": "Uma nuvem 3D feita só pelas fotos",
-   "texto": "Com as 26 poses certas, as fotos geram uma nuvem colorida: fachadas e janelas que o laser aéreo quase não vê. Ela encosta nas paredes do LiDAR com ±0,26 m.",
+   "titulo": "As fotos completam o que o laser não vê",
+   "texto": "Com as 26 poses certas, as fotos geram uma nuvem colorida que preenche as fachadas e as janelas, onde o laser aéreo quase não tem ponto. Ela encosta nas paredes do LiDAR com ±0,26 m.",
    "vista": {
     "posicao": [
-     332445.0,
-     7394815.0,
-     795.0
+     332300.0,
+     7394858.0,
+     790.0
     ],
     "alvo": [
-     332482.0,
-     7394905.0,
-     768.0
+     332480.0,
+     7394902.0,
+     762.0
     ]
    },
    "mostrar": [
+    "lidar",
     "fotos"
    ]
   }

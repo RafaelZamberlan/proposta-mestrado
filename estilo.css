@@ -214,17 +214,19 @@ caption { caption-side: bottom; text-align: left; font-size: .8rem; color: var(-
 .seq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin: 1.2rem 0 1.4rem; }
 .seq figure { margin: 0; }
 .seq.quatro { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.seq.tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+figure video.video { width: 100%; height: auto; display: block; border: 1px solid var(--linha); border-radius: 2px; background: #15181b; }
 .conferencias li { margin: .45rem 0; }
 .descartados ul { font-size: .92rem; }
 
 @media (max-width: 860px) {
-  .seq.quatro { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .seq.quatro, .seq.tres { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tours { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
   .passo-bloco { grid-template-columns: minmax(0, 1fr); gap: 4px; }
   .passo-num { font-size: 1.9rem; }
-  .seq { grid-template-columns: minmax(0, 1fr); }
+  .seq, .seq.tres { grid-template-columns: minmax(0, 1fr); }
   .tour { grid-template-columns: 96px minmax(0, 1fr); }
   .tour img { width: 96px; height: 54px; }
   .comparar .rot { font-size: 11.5px; }

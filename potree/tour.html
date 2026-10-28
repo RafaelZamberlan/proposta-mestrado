@@ -84,7 +84,7 @@
   viewer.setFOV(65); viewer.setPointBudget(4_000_000); viewer.setBackground('black'); viewer.setMinNodeSize(5);
   window.viewer = viewer;
 
-  let cfg, imagens, passo = 0, linhasObjs = [], rotulos = [];
+  let cfg, imagens, passo = 0, linhasObjs = [], rotulos = [], cores = CORES;
   const nuvens = {}, porNome = {};
 
   // ---------- linhas 3D (edificações do GeoSampa): o mesmo truque do viewer do TCC, que pega as classes de linha de
@@ -159,7 +159,7 @@
     if (p.mostrar.includes('cameras')) itens.push([CORES[60], 'GPS'], [CORES[61], 'pose ajustada']);
     if (p.linhas) itens.push(['#3d8bff', 'edificações do GeoSampa']);
     if (TOUR === 'trj2' && p.mostrar.some(m => ['copa', 'tronco', 'casco'].includes(m))) itens.push(['#888', 'uma cor por árvore']);
-    if (p.mostrar.includes('lidar') && !p.foto) itens.push([CORES[6], 'prédio'], [CORES[5], 'árvore'], [CORES[2], 'chão']);
+    if (p.mostrar.includes('lidar') && !p.foto) itens.push([cores[6], 'prédio'], [cores[5], 'árvore'], [cores[2], 'chão']);
     L.innerHTML = itens.map(([c, t]) => `<span><i style="background:${c}"></i>${t}</span>`).join('');
   }
 
@@ -171,7 +171,11 @@
     rotulos.forEach(a => a.visible = !!p.rotulos);
     viewer.setFOV(p.fov || 55);
     if (p.foto) entrarFoto(p);
-    else { sairFoto(); viewer.scene.view.setView(p.vista.posicao, p.vista.alvo, 1200); }
+    else {                                         // fora da foto: Earth Control (arrastar move, botão direito gira)
+      sairFoto();
+      viewer.setControls(viewer.earthControls);
+      viewer.scene.view.setView(p.vista.posicao, p.vista.alvo, 1200);
+    }
     document.getElementById('num').textContent = `PASSO ${passo + 1} DE ${cfg.passos.length}`;
     document.getElementById('tit').textContent = p.titulo;
     document.getElementById('txt').textContent = p.texto;
@@ -179,7 +183,8 @@
     const prox = document.getElementById('proximo');
     prox.textContent = passo === cfg.passos.length - 1 ? 'recomeçar' : 'próximo ›';
     document.querySelectorAll('#pontos i').forEach((b, i) => b.classList.toggle('ativo', i === passo));
-    document.getElementById('dica').textContent = p.foto ? 'arraste para olhar em volta' : 'arraste para girar · roda aproxima';
+    document.getElementById('dica').textContent = p.foto ? 'arraste para olhar em volta'
+      : 'arraste para mover · botão direito gira · roda aproxima';
     legenda(p);
     const u = new URLSearchParams(location.search); u.set('passo', passo + 1); history.replaceState(null, '', '?' + u);
   }
@@ -194,7 +199,7 @@
   (async () => {
     cfg = await (await fetch(`tour/${TOUR}.json`)).json();
     document.title = cfg.titulo;
-    const cores = Object.assign({}, CORES, cfg.cores || {});
+    cores = Object.assign({}, CORES, cfg.cores || {});
     const esquema = { DEFAULT: { visible: true, name: 'outra', color: [0.6, 0.6, 0.6, 1] } };
     for (const [k, h] of Object.entries(cores)) esquema[k] = { visible: true, name: k, color: [...hexRGB(h), 1] };
     viewer.setClassifications(esquema);
@@ -234,7 +239,55 @@
     irPara((+q.get('passo') || 1) - 1);
   })();
 
-  // prévia estática (só na montagem, pelo apresentacao/servidor.py): quadro em JPEG
+  // ---------- só na montagem (apresentacao/servidor.py): quadros para o site
+  // os rótulos do Potree são HTML e não saem no canvas: aqui eles são desenhados por cima de cada quadro
+  function desenharRotulos(ctx, L, A) {
+    if (!cfg.passos[passo].rotulos) return;
+    const V3 = viewer.scene.view.position.constructor, cam = viewer.scene.getActiveCamera();
+    ctx.font = '600 15px "IBM Plex Sans", system-ui, sans-serif';
+    ctx.textBaseline = 'middle';
+    for (const r of cfg.rotulos || []) {
+      const v = new V3(...r.posicao).project(cam);
+      if (v.z > 1 || Math.abs(v.x) > 1.05 || Math.abs(v.y) > 1.05) continue;
+      const x = (v.x + 1) / 2 * L, y = (1 - v.y) / 2 * A, w = ctx.measureText(r.texto).width + 14;
+      ctx.fillStyle = 'rgba(20, 23, 26, .82)';
+      ctx.fillRect(x - w / 2, y - 24, w, 22);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(r.texto, x - w / 2 + 7, y - 13);
+    }
+  }
+
+  // volta em torno de um ponto, quadro a quadro: fig/quadros/<nome>_NNN.jpg (o ffmpeg junta em vídeo)
+  window.gravarOrbita = async (nome, o) => {
+    const L = o.largura || 1280, A = o.altura || 720, N = o.quadros || 288;
+    const area = document.getElementById('render');
+    Object.assign(area.style, { width: L + 'px', height: A + 'px', right: 'auto', bottom: 'auto' });
+    const pos = k => {
+      const t = (o.inicio || 0) * grau + 2 * Math.PI * k / N * (o.voltas || 1);
+      return [o.centro[0] + o.raio * Math.sin(t), o.centro[1] - o.raio * Math.cos(t), o.centro[2] + o.elevacao];
+    };
+    viewer.scene.view.setView(pos(0), o.centro, 0);
+    await new Promise(r => setTimeout(r, o.espera || 6000));
+    const tela = document.createElement('canvas'); tela.width = L; tela.height = A;
+    const ctx = tela.getContext('2d');
+    for (let k = 0; k < N; k++) {
+      viewer.scene.view.setView(pos(k), o.centro, 0);
+      viewer.update(1 / 30, performance.now());
+      viewer.renderer.setSize(L, A);               // o laço do Potree pode não ter rodado com a área nova
+      const cam = viewer.scene.getActiveCamera();
+      cam.aspect = L / A; cam.updateProjectionMatrix();
+      viewer.render();
+      ctx.fillStyle = '#15181b'; ctx.fillRect(0, 0, L, A);
+      ctx.drawImage(viewer.renderer.domElement, 0, 0, L, A);
+      desenharRotulos(ctx, L, A);
+      await fetch(`/salvar?nome=fig/quadros/${nome}_${String(k).padStart(3, '0')}.jpg`,
+                  { method: 'POST', body: tela.toDataURL('image/jpeg', 0.92) });
+    }
+    Object.assign(area.style, { width: '', height: '', right: '', bottom: '' });
+    return N;
+  };
+
+  // prévia estática: quadro em JPEG
   window.capturar = async (largura = 1200, altura = 675, espera = 4000) => {
     const area = document.getElementById('render');
     Object.assign(area.style, { width: largura + 'px', height: altura + 'px', right: 'auto', bottom: 'auto' });

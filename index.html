@@ -163,8 +163,12 @@
       <p class="coluna">Com as poses certas, as 26 fotos geram uma nuvem 3D colorida: fachadas e janelas, onde o laser aéreo tem só
         ~3 pontos por m². Ela encosta nas paredes do LiDAR com ±0,26 m.</p>
       <figure>
-        <img src="fig/av_nuvem.jpg" alt="Nuvem de pontos colorida feita só pelas fotos, com fachadas e janelas dos prédios da avenida" width="1200" height="675" loading="lazy">
-        <figcaption>Nuvem feita só pelas fotos da GoPro, no Metashape, com as poses ajustadas. <span class="selo">Resultados preliminares, Alinhamento360, out/2026.</span></figcaption>
+        <div class="comparar" data-rotulos="só o LiDAR aéreo|LiDAR + nuvem das fotos">
+          <img src="fig/av_so_lidar.jpg" alt="A avenida vista de cima e de lado, só com o LiDAR aéreo: telhados cheios, fachadas quase vazias" width="1200" height="675" loading="lazy">
+          <img class="depois" src="fig/av_com_fotos.jpg" alt="A mesma vista com a nuvem colorida das fotos preenchendo as fachadas" width="1200" height="675" loading="lazy">
+        </div>
+        <figcaption><strong>Arraste a barra.</strong> A avenida só com o LiDAR aéreo e com a nuvem feita pelas fotos da GoPro (Metashape,
+          poses ajustadas), que preenche as fachadas. <span class="selo">Resultados preliminares, Alinhamento360, out/2026.</span></figcaption>
       </figure>
     </div>
   </div>
@@ -179,16 +183,20 @@
         <img src="fig/arvore_mascaras.jpg" alt="Quatro fotos da mesma árvore com o contorno verde recortado pela IA" width="1764" height="475" loading="lazy">
         <figcaption><strong>a.</strong> A IA (SAM 3) recorta a mesma árvore em cada foto em que ela aparece, de 7 a 19 m.</figcaption>
       </figure>
-      <div class="seq">
+      <div class="seq tres">
         <figure><img src="fig/arv_copa.jpg" alt="Foto com os pontos do LiDAR de três copas, uma cor por árvore" width="1200" height="675" loading="lazy">
           <figcaption><strong>b.</strong> O laser aéreo vê a copa por cima (uma cor por árvore), mas quase nada do tronco.</figcaption></figure>
         <figure><img src="fig/arv_tronco.jpg" alt="Foto com os troncos em 3D desenhados por cima dos troncos reais" width="1200" height="675" loading="lazy">
           <figcaption><strong>c.</strong> As silhuetas de até 12 fotos esculpem o tronco em 3D. Dele sai o diâmetro (DAP).</figcaption></figure>
         <figure><img src="fig/arv_casco.jpg" alt="Foto com a copa completa de cada árvore em pontos coloridos" width="1200" height="675" loading="lazy">
           <figcaption><strong>d.</strong> Onde o laser não tem ponto, as fotos completam a copa.</figcaption></figure>
-        <figure><img src="fig/arv_fora.jpg" alt="Vista de cima da rua com os modelos 3D das árvores sobre o LiDAR" width="1200" height="675" loading="lazy">
-          <figcaption><strong>e.</strong> De fora: cada árvore vira um modelo com altura, copa e DAP.</figcaption></figure>
       </div>
+      <figure>
+        <video class="video" src="fig/arvores_orbita.mp4" poster="fig/arvores_orbita.jpg" width="960" height="540" autoplay muted loop playsinline preload="metadata"
+          aria-label="Volta em torno das nove árvores da rua, cada uma com o rótulo de altura e DAP"></video>
+        <figcaption><strong>e.</strong> De fora, cada árvore vira um modelo 3D com altura, copa e DAP, sobre o LiDAR 2017 da rua.
+          <span class="selo">Resultados preliminares, Alinhamento360, out/2026.</span></figcaption>
+      </figure>
       <p class="coluna"><strong>Localização.</strong> O TCC posicionava cada árvore pelo centro da caixa do detector, que cai na copa.
         O método novo usa o pé da árvore em cada foto e a copa do LiDAR que o raio atravessa. O método do TCC só pôde ser refeito em
         duas árvores:</p>

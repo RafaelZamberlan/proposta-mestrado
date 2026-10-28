@@ -1,0 +1,88 @@
+{
+ "version": "2.0",
+ "name": "arvores_casco",
+ "description": "",
+ "points": 17722,
+ "projection": "+proj=utm +zone=23 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+ "hierarchy": {
+  "firstChunkSize": 22,
+  "stepSize": 32,
+  "depth": 0
+ },
+ "offset": [
+  348280.803,
+  7395237.674,
+  799.836
+ ],
+ "scale": [
+  0.001,
+  0.001,
+  0.001
+ ],
+ "spacing": 0.5748699812500073,
+ "boundingBox": {
+  "min": [
+   348280.803,
+   7395237.674,
+   799.836
+  ],
+  "max": [
+   348354.38635760004,
+   7395311.257357599,
+   873.4193576000009
+  ]
+ },
+ "encoding": "DEFAULT",
+ "attributes": [
+  {
+   "name": "position",
+   "description": "",
+   "size": 12,
+   "numElements": 3,
+   "elementSize": 4,
+   "type": "int32",
+   "min": [
+    348280.803,
+    7395237.674,
+    799.836
+   ],
+   "max": [
+    348354.379,
+    7395280.161,
+    810.535
+   ]
+  },
+  {
+   "name": "rgb",
+   "description": "",
+   "size": 6,
+   "numElements": 3,
+   "elementSize": 2,
+   "type": "uint16",
+   "min": [
+    0,
+    0,
+    0
+   ],
+   "max": [
+    63744,
+    65280,
+    65280
+   ]
+  },
+  {
+   "name": "classification",
+   "description": "",
+   "size": 1,
+   "numElements": 1,
+   "elementSize": 1,
+   "type": "uint8",
+   "min": [
+    51
+   ],
+   "max": [
+    59
+   ]
+  }
+ ]
+}

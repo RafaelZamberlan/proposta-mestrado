@@ -11,24 +11,50 @@
     raiz.dataset.tema = novo;
     try { localStorage.setItem('tema', novo); } catch (e) { /* sem armazenamento: o tema vale só nesta visita */ }
     rotularTema();
-    document.querySelectorAll('.viewer iframe').forEach(f => f.contentWindow && f.contentWindow.postMessage({ tema: novo }, '*'));
   });
   midiaEscura.addEventListener('change', rotularTema);
   rotularTema();
 
-  // ---------- viewers 3D: prévia estática; no clique, o Potree entra no lugar (no celular, abre em outra aba)
-  document.querySelectorAll('.viewer').forEach(caixa => {
-    const url = `potree/viewer.html?v=${caixa.dataset.viewer}`;
-    caixa.querySelector('.abrir').addEventListener('click', () => {
-      const tema = escuro() ? 'escuro' : 'claro';
-      if (innerWidth < 720) { window.open(`${url}&tema=${tema}`, '_blank', 'noopener'); return; }
-      const quadro = document.createElement('iframe');
-      quadro.src = `${url}&tema=${tema}`;
-      quadro.title = caixa.querySelector('.legenda-previa').textContent;
-      quadro.allow = 'fullscreen';
-      caixa.replaceChildren(quadro);
-    });
+  // ---------- comparador antes/depois: a barra corta a imagem de cima (depois); uma volta sozinha quando aparece
+  const reduzir = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.comparar').forEach(caixa => {
+    const [esq, dir] = (caixa.dataset.rotulos || 'antes|depois').split('|');
+    caixa.insertAdjacentHTML('beforeend', `<span class="barra"></span><span class="alca" aria-hidden="true">‹ ›</span>` +
+      `<span class="rot esq">${esq}</span><span class="rot dir">${dir}</span>` +
+      `<input type="range" min="0" max="100" value="50" aria-label="Comparar: ${esq} à esquerda, ${dir} à direita">`);
+    const r = caixa.querySelector('input');
+    const pos = v => caixa.style.setProperty('--corte', `${v}%`);
+    let mexeu = false;
+    r.addEventListener('input', () => { mexeu = true; pos(r.value); });
+    pos(50);
+    if (reduzir || !('IntersectionObserver' in window)) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      obs.disconnect();
+      const t0 = performance.now(), dur = 2200;
+      const passo = t => {
+        if (mexeu) return;
+        const k = Math.min(1, (t - t0) / dur);
+        const v = 50 + 32 * Math.sin(k * Math.PI * 2) * (1 - k);
+        pos(v); r.value = v;
+        if (k < 1) requestAnimationFrame(passo);
+      };
+      setTimeout(() => requestAnimationFrame(passo), 400);
+    }, { threshold: 0.6 });
+    obs.observe(caixa);
   });
+
+  // ---------- apresentações 3D guiadas: em tela cheia, por cima da página
+  const modal = document.getElementById('tour-modal'), quadro = modal.querySelector('iframe');
+  const fechar = () => { modal.hidden = true; quadro.src = 'about:blank'; document.body.style.overflow = ''; };
+  document.querySelectorAll('[data-tour]').forEach(b => b.addEventListener('click', () => {
+    quadro.src = `potree/tour.html?t=${b.dataset.tour}`;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    quadro.focus();
+  }));
+  document.getElementById('tour-fechar').addEventListener('click', fechar);
+  document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && !modal.hidden) fechar(); });
 
   const NS = 'http://www.w3.org/2000/svg';
   const el = (nome, attrs = {}, pai) => {

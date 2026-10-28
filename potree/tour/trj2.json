@@ -1,0 +1,284 @@
+{
+ "titulo": "Uma rua do TCC: edificações e árvores sobre as fotos 360",
+ "fotos": "fotos/trj2",
+ "poses": {
+  "549092.webp": {
+   "gps": [
+    348316.021,
+    7395263.71,
+    800.955,
+    127.836,
+    -2.05,
+    -0.46
+   ],
+   "geosampa": [
+    348315.882,
+    7395263.066,
+    800.543,
+    134.633,
+    -2.527,
+    -0.282
+   ],
+   "refinada": [
+    348316.5188,
+    7395262.6661,
+    800.0975,
+    135.0284,
+    -2.1889,
+    -0.1466
+   ]
+  },
+  "549149.webp": {
+   "gps": [
+    348325.228,
+    7395256.75,
+    800.725,
+    123.417,
+    -2.249,
+    -1.416
+   ],
+   "geosampa": [
+    348324.981,
+    7395256.029,
+    800.31,
+    130.288,
+    -2.531,
+    -1.644
+   ],
+   "refinada": [
+    348325.3403,
+    7395255.9111,
+    800.0086,
+    130.5181,
+    -2.1709,
+    -1.276
+   ]
+  }
+ },
+ "linhas": "tour/trj2_linhas.json",
+ "cores": {
+  "51": "#e6194b",
+  "52": "#3cb44b",
+  "53": "#ffe119",
+  "54": "#4363d8",
+  "55": "#f58231",
+  "56": "#911eb4",
+  "57": "#46f0f0",
+  "58": "#f032e6",
+  "59": "#bcf60c",
+  "60": "#fabebe",
+  "61": "#008080",
+  "62": "#e6beff",
+  "63": "#9a6324",
+  "2": "#a4a39d",
+  "20": "#a4a39d",
+  "5": "#b3bfa9",
+  "6": "#d2cfc8",
+  "19": "#c9c3b5"
+ },
+ "camadas": [
+  {
+   "id": "lidar",
+   "caminho": "amostras/arvores_lidar/metadata.json",
+   "cor": "classe",
+   "tamanho": 1.8
+  },
+  {
+   "id": "copa",
+   "caminho": "amostras/arvores_copa/metadata.json",
+   "pontos": 3693,
+   "mb": 0.1,
+   "cor": "classe",
+   "tamanho": 4.0
+  },
+  {
+   "id": "casco",
+   "caminho": "amostras/arvores_casco/metadata.json",
+   "pontos": 17722,
+   "mb": 0.3,
+   "cor": "classe",
+   "tamanho": 2.0
+  },
+  {
+   "id": "tronco",
+   "caminho": "amostras/arvores_tronco/metadata.json",
+   "pontos": 45832,
+   "mb": 0.9,
+   "cor": "classe",
+   "tamanho": 3.0
+  }
+ ],
+ "rotulos": [
+  {
+   "texto": "A01 · 5,1 m · DAP 18 cm",
+   "posicao": [
+    348349.21,
+    7395249.31,
+    803.56
+   ]
+  },
+  {
+   "texto": "A02 · 10,8 m · DAP 31 cm",
+   "posicao": [
+    348330.24,
+    7395266.61,
+    809.8
+   ]
+  },
+  {
+   "texto": "A03 · 10,1 m · DAP 38 cm",
+   "posicao": [
+    348326.58,
+    7395246.85,
+    808.86
+   ]
+  },
+  {
+   "texto": "A04 · 10,1 m · DAP 49 cm",
+   "posicao": [
+    348331.92,
+    7395242.57,
+    808.67
+   ]
+  },
+  {
+   "texto": "A05 · 8,9 m · DAP 35 cm",
+   "posicao": [
+    348323.44,
+    7395272.06,
+    807.79
+   ]
+  },
+  {
+   "texto": "A06 · 12,1 m · DAP 44 cm",
+   "posicao": [
+    348286.07,
+    7395274.93,
+    811.31
+   ]
+  },
+  {
+   "texto": "A07 · 10,4 m · DAP 22 cm",
+   "posicao": [
+    348317.49,
+    7395274.31,
+    809.68
+   ]
+  },
+  {
+   "texto": "A08 · poste",
+   "posicao": [
+    348340.56,
+    7395241.95,
+    802.58
+   ]
+  },
+  {
+   "texto": "A09 · 9,6 m · DAP 19 cm",
+   "posicao": [
+    348320.27,
+    7395273.79,
+    808.53
+   ]
+  }
+ ],
+ "passos": [
+  {
+   "titulo": "Uma foto 360 do TCC, com o GPS do carro",
+   "texto": "Câmera Ladybug no teto do carro. As linhas azuis são as edificações do GeoSampa na altura do telhado medida pelo LiDAR. Com a pose do GPS, elas não encaixam nos prédios.",
+   "foto": "549092.webp",
+   "modo": "gps",
+   "olhar": [
+    175.0,
+    14.0
+   ],
+   "fov": 80,
+   "mostrar": [],
+   "linhas": true
+  },
+  {
+   "titulo": "A pose ajustada pelas edificações",
+   "texto": "O ajuste move a câmera até as linhas caírem nas quinas e nos telhados da foto. O mesmo vale nas outras fotos da rua.",
+   "foto": "549092.webp",
+   "modo": "geosampa",
+   "olhar": [
+    175.0,
+    14.0
+   ],
+   "fov": 80,
+   "mostrar": [],
+   "linhas": true
+  },
+  {
+   "titulo": "As árvores: o que o laser vê",
+   "texto": "Cada cor é uma árvore. Os pontos são do LiDAR aéreo: ele vê a copa por cima, mas quase nada do tronco.",
+   "foto": "549149.webp",
+   "modo": "refinada",
+   "olhar": [
+    345.0,
+    9.0
+   ],
+   "fov": 62,
+   "mostrar": [
+    "copa"
+   ],
+   "linhas": false
+  },
+  {
+   "titulo": "O tronco, pelas fotos",
+   "texto": "A IA (SAM 3) recorta a árvore em cada foto em que ela aparece. Cruzando as silhuetas de até 12 fotos, sobra o tronco em 3D, e dele sai o diâmetro (DAP).",
+   "foto": "549149.webp",
+   "modo": "refinada",
+   "olhar": [
+    345.0,
+    9.0
+   ],
+   "fov": 62,
+   "mostrar": [
+    "copa",
+    "tronco"
+   ],
+   "linhas": false
+  },
+  {
+   "titulo": "A copa, completada pelas fotos",
+   "texto": "Onde o laser não tem ponto, as fotos completam a copa (o casco).",
+   "foto": "549149.webp",
+   "modo": "refinada",
+   "olhar": [
+    345.0,
+    9.0
+   ],
+   "fov": 62,
+   "mostrar": [
+    "copa",
+    "tronco",
+    "casco"
+   ],
+   "linhas": false
+  },
+  {
+   "titulo": "Cada árvore com altura e DAP",
+   "texto": "De fora, cada árvore vira um modelo 3D com altura, copa e DAP. Ainda sem conferência com fita em campo: é o próximo passo.",
+   "vista": {
+    "posicao": [
+     348295.6,
+     7395214.5,
+     827.7
+    ],
+    "alvo": [
+     348315.6,
+     7395272.5,
+     800.7
+    ]
+   },
+   "mostrar": [
+    "lidar",
+    "copa",
+    "casco",
+    "tronco"
+   ],
+   "rotulos": true
+  }
+ ]
+}

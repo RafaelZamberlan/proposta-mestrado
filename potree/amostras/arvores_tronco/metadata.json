@@ -1,0 +1,88 @@
+{
+ "version": "2.0",
+ "name": "arvores_tronco",
+ "description": "",
+ "points": 45832,
+ "projection": "+proj=utm +zone=23 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+ "hierarchy": {
+  "firstChunkSize": 88,
+  "stepSize": 32,
+  "depth": 1
+ },
+ "offset": [
+  348284.292,
+  7395241.768,
+  797.665
+ ],
+ "scale": [
+  0.001,
+  0.001,
+  0.001
+ ],
+ "spacing": 0.5025658765623872,
+ "boundingBox": {
+  "min": [
+   348284.292,
+   7395241.768,
+   797.665
+  ],
+  "max": [
+   348348.6204322,
+   7395306.0964322,
+   861.9934321999855
+  ]
+ },
+ "encoding": "DEFAULT",
+ "attributes": [
+  {
+   "name": "position",
+   "description": "",
+   "size": 12,
+   "numElements": 3,
+   "elementSize": 4,
+   "type": "int32",
+   "min": [
+    348284.292,
+    7395241.768,
+    797.665
+   ],
+   "max": [
+    348348.614,
+    7395276.406,
+    803.265
+   ]
+  },
+  {
+   "name": "rgb",
+   "description": "",
+   "size": 6,
+   "numElements": 3,
+   "elementSize": 2,
+   "type": "uint16",
+   "min": [
+    0,
+    0,
+    0
+   ],
+   "max": [
+    28672,
+    27904,
+    27904
+   ]
+  },
+  {
+   "name": "classification",
+   "description": "",
+   "size": 1,
+   "numElements": 1,
+   "elementSize": 1,
+   "type": "uint8",
+   "min": [
+    51
+   ],
+   "max": [
+    59
+   ]
+  }
+ ]
+}

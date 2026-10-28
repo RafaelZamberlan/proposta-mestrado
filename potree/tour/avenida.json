@@ -1,0 +1,149 @@
+{
+ "titulo": "Fotos 360 da GoPro registradas no LiDAR aéreo",
+ "fotos": "fotos/avenida",
+ "poses": {
+  "NR9C17.webp": {
+   "gps": [
+    332394.703,
+    7394899.709,
+    756.592,
+    85.2975,
+    -12.3768,
+    -0.2809
+   ],
+   "ajustada": [
+    332402.1136,
+    7394878.0805,
+    756.6545,
+    77.6203,
+    -12.0503,
+    0.0818
+   ]
+  },
+  "Y169XC.webp": {
+   "gps": [
+    332353.783,
+    7394902.961,
+    756.608,
+    87.4134,
+    -12.3768,
+    -0.2809
+   ],
+   "ajustada": [
+    332365.6297,
+    7394870.3477,
+    757.688,
+    73.8234,
+    -11.3633,
+    -1.0917
+   ]
+  }
+ },
+ "linhas": "tour/avenida_linhas.json",
+ "camadas": [
+  {
+   "id": "lidar",
+   "caminho": "amostras/avenida_lidar/metadata.json",
+   "cor": "classe",
+   "tamanho": 1.8
+  },
+  {
+   "id": "fotos",
+   "caminho": "amostras/avenida_fotos/metadata.json",
+   "cor": "rgb",
+   "tamanho": 2.2
+  },
+  {
+   "id": "cameras",
+   "caminho": "amostras/avenida_cameras/metadata.json",
+   "cor": "rgb",
+   "tamanho": 9.0
+  }
+ ],
+ "passos": [
+  {
+   "titulo": "O LiDAR aéreo da Prefeitura",
+   "texto": "Em 2017, um avião com laser mediu São Paulo inteira: cerca de 15 pontos por metro quadrado. Prédios em bege, árvores em verde, chão em cinza. O dado é público, e aqui ele vira a régua.",
+   "vista": {
+    "posicao": [
+     332470.0,
+     7394800.0,
+     960.0
+    ],
+    "alvo": [
+     332478.0,
+     7394899.0,
+     752.0
+    ]
+   },
+   "mostrar": [
+    "lidar"
+   ]
+  },
+  {
+   "titulo": "Onde o GPS diz que as fotos estão",
+   "texto": "Cada bolinha é uma foto 360° tirada do teto de um carro. Vermelho: onde o GPS da câmera disse que ela estava. Azul: onde ela estava de fato, depois do ajuste. Nas 26 fotos, o GPS erra 22 m na mediana e 19° no rumo.",
+   "vista": {
+    "posicao": [
+     332478.0,
+     7394790.0,
+     915.0
+    ],
+    "alvo": [
+     332478.0,
+     7394899.0,
+     752.0
+    ]
+   },
+   "mostrar": [
+    "lidar",
+    "cameras"
+   ]
+  },
+  {
+   "titulo": "Dentro de uma foto, com o GPS",
+   "texto": "As linhas azuis são as edificações do GeoSampa (o cadastro da Prefeitura), na altura do telhado que o LiDAR mediu. Com a posição e o rumo do GPS, elas ficam soltas no céu.",
+   "foto": "NR9C17.webp",
+   "modo": "gps",
+   "olhar": [
+    20.0,
+    25.0
+   ],
+   "fov": 85,
+   "mostrar": [],
+   "linhas": true
+  },
+  {
+   "titulo": "A mesma foto, com a pose ajustada",
+   "texto": "Depois do ajuste com o LiDAR como gabarito, as linhas caem sobre as quinas e os telhados da Biblioteca Mário de Andrade e do prédio ao lado. Nenhum ponto foi marcado à mão.",
+   "foto": "NR9C17.webp",
+   "modo": "ajustada",
+   "olhar": [
+    20.0,
+    25.0
+   ],
+   "fov": 85,
+   "mostrar": [],
+   "linhas": true
+  },
+  {
+   "titulo": "Uma nuvem 3D feita só pelas fotos",
+   "texto": "Com as 26 poses certas, as fotos geram uma nuvem colorida: fachadas e janelas que o laser aéreo quase não vê. Ela encosta nas paredes do LiDAR com ±0,26 m.",
+   "vista": {
+    "posicao": [
+     332445.0,
+     7394815.0,
+     795.0
+    ],
+    "alvo": [
+     332482.0,
+     7394905.0,
+     768.0
+    ]
+   },
+   "mostrar": [
+    "fotos"
+   ]
+  }
+ ]
+}
